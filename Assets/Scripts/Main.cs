@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 #if !UNITY_EDITOR
 using Reality.HoloLens;
@@ -21,6 +22,7 @@ public class Main : MonoBehaviour
         this.mRecognizer = new GestureRecognizer();
         this.mRecognizer.TappedEvent += OnTapped;
         this.mRecognizer.StartCapturingGestures();
+        //ViewManager.FileChangedEvent += OnFileChanged;
 #else
         Geometry.CreateObjects(this.Path);
 #endif
@@ -43,4 +45,9 @@ public class Main : MonoBehaviour
         await ViewManager.SwitchViews();
     }
 #endif
+
+    void OnFileChanged(object sender, EventArgs e)
+    {
+        Geometry.CreateObjects(sender as string);
+    }
 }

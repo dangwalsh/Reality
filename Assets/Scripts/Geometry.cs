@@ -32,15 +32,47 @@ public static class Geometry
             gameObject.AddComponent<MeshRenderer>();
             var renderer = gameObject.GetComponent<MeshRenderer>();
             var material = CreateMaterial(i, "Standard");
-            var map = Facade.GetMapKdOfObject(i);
-
-            if (map != null)
-                material.mainTexture = CreateTexture2D(map);
-
+            CreateTextureMaps(i, ref material);
             renderer.material = material;
         }
     }
 
+    static void CreateTextureMaps(int index, ref Material material)
+    {
+        var mapKd = Facade.GetMapKdOfObject(index);
+        if (mapKd != null)
+        {
+            try
+            {
+                var texture = CreateTexture2D(mapKd);
+                var objScale = Facade.GetScaleOfMapOfObject("Kd", index);
+                var scale = new Vector2(objScale[0], objScale[1]);
+                material.SetTexture("_MainTex", texture);
+                material.SetTextureScale("_MainTex", scale);
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+        }
+
+        var mapBump = Facade.GetMapBumpOfObject(index);
+        if (mapBump != null)
+        {
+            try
+            {
+                var texture = CreateTexture2D(mapBump);
+                var objScale = Facade.GetScaleOfMapOfObject("Bump", index);
+                var scale = new Vector2(objScale[0], objScale[1]);
+                material.SetTexture("_BumpMap", texture);
+                material.SetTextureScale("_BumpTex", scale);
+            }
+            catch (FileNotFoundException)
+            {
+
+            }
+        }
+    }
 
     static Material CreateMaterial(int index, string shaderType)
     {
