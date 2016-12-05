@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
 #if !UNITY_EDITOR
+using Reality.HoloLens;
 using UnityEngine.VR.WSA.Input;
 #endif
 
@@ -16,7 +17,7 @@ public class Main : MonoBehaviour
     void Start()
     {
 #if !UNITY_EDITOR
-        UniversalWindows.ViewManager.FilePath = "";
+        ViewManager.FilePath = "";
         this.mRecognizer = new GestureRecognizer();
         this.mRecognizer.TappedEvent += OnTapped;
         this.mRecognizer.StartCapturingGestures();
@@ -28,10 +29,10 @@ public class Main : MonoBehaviour
     void Update()
     {
 #if !UNITY_EDITOR
-        if (UniversalWindows.ViewManager.FilePath != "")
+        if (ViewManager.FilePath != "")
         {
-            Geometry.CreateObjects(UniversalWindows.ViewManager.FilePath);
-            UniversalWindows.ViewManager.FilePath = "";
+            Geometry.CreateObjects(ViewManager.FilePath);
+            ViewManager.FilePath = "";
         }
 #endif
     }
@@ -39,7 +40,7 @@ public class Main : MonoBehaviour
 #if !UNITY_EDITOR
     async void OnTapped(InteractionSourceKind source, int tapCount, Ray headRay)
     {
-        await UniversalWindows.ViewManager.SwitchViews();
+        await ViewManager.SwitchViews();
     }
 #endif
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
-using ObjReader;
+using Reality.ObjReader;
 
 public static class Geometry
 {
