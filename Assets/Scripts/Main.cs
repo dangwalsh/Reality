@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
+
+#if !UNITY_EDITOR
 using UnityEngine.VR.WSA.Input;
+#endif
 
 
 public class Main : MonoBehaviour
 {
-    public string Path;
+#if !UNITY_EDITOR
     GestureRecognizer mRecognizer;
+#else
+    public string Path;
+#endif
 
     void Start()
     {
