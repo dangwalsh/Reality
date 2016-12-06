@@ -39,14 +39,14 @@ public static class Geometry
 
     static void CreateTextureMaps(int index, ref Material material)
     {
-        var mapKd = Facade.GetMapKdOfObject(index);
+        var mapKd = Facade.GetPathOfMapOfObject("Diffuse", index);
         if (mapKd != null)
         {
             try
             {
                 var texture = CreateTexture2D(mapKd);
-                var objScale = Facade.GetScaleOfMapOfObject("Kd", index);
-                var scale = new Vector2(objScale[0], objScale[1]);
+                var texScale = Facade.GetScaleOfMapOfObject("Diffuse", index);
+                var scale = new Vector2(texScale[0], texScale[1]);
                 material.SetTexture("_MainTex", texture);
                 material.SetTextureScale("_MainTex", scale);
             }
@@ -56,14 +56,14 @@ public static class Geometry
             }
         }
 
-        var mapBump = Facade.GetMapBumpOfObject(index);
+        var mapBump = Facade.GetPathOfMapOfObject("Bump", index);
         if (mapBump != null)
         {
             try
             {
                 var texture = CreateTexture2D(mapBump);
-                var objScale = Facade.GetScaleOfMapOfObject("Bump", index);
-                var scale = new Vector2(objScale[0], objScale[1]);
+                var texScale = Facade.GetScaleOfMapOfObject("Bump", index);
+                var scale = new Vector2(texScale[0], texScale[1]);
                 material.SetTexture("_BumpMap", texture);
                 material.SetTextureScale("_BumpTex", scale);
             }
@@ -78,7 +78,7 @@ public static class Geometry
     {
         var shader = Shader.Find(shaderType);
         var material = new Material(shader);
-        var color = Facade.GetKdOfObject(index);
+        var color = Facade.GetColorOfChannelOfObject("Diffuse", index);
         material.color = new Color(color[0], color[1], color[2], color[3]);
 
         return material;
