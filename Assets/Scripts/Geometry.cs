@@ -6,17 +6,32 @@ using Reality.ObjReader;
 public static class Geometry
 {
     static string directory;
-    static Vector3[] verts;
-    static Vector3[] norms;
-    static Vector2[] uvs;
 
-    public static void CreateObjects(string path)
+    public static void Initialize(string path)
     {
         directory = GetDirectoryName(path);
 
-        var objCount = CreateVertices(path);
+        var count = Facade.ImportObjects(path);
 
-        for (int i = 0; i < objCount; ++i)
+        Vector3[] verts = null;
+        Vector3[] norms = null;
+        Vector2[] uvs = null;
+
+        GetVertices(ref verts);
+        GetNormals(ref norms);
+        GetUVs(ref uvs);
+
+        CreateObjects(count, ref verts, ref norms, ref uvs);
+    }
+
+    static void CreateObjects(
+        int count,
+        ref Vector3[] verts,
+        ref Vector3[] norms,
+        ref Vector2[] uvs
+    )
+    {
+        for (int i = 0; i < count; ++i)
         {
             var gameObject = new GameObject(Facade.GetNameOfObject(i));
 
@@ -28,6 +43,8 @@ public static class Geometry
             mesh.uv = uvs;
             mesh.normals = norms;
             mesh.triangles = triangles;
+
+            if (mesh.normals == null) mesh.RecalculateNormals();
 
             gameObject.AddComponent<MeshRenderer>();
             var renderer = gameObject.GetComponent<MeshRenderer>();
@@ -88,35 +105,48 @@ public static class Geometry
         return material;
     }
 
-    static int CreateVertices(string path)
+    static void GetVertices(ref Vector3[] verts)
     {
-        var objCount = Facade.ImportObjects(path);
         var objVerts = Facade.GetVertices();
-        var objUVs = Facade.GetUVs();
-        var objNorms = Facade.GetNormals();
-
+        if (objVerts == null) return;
         verts = new Vector3[objVerts.Length];
-        uvs = new Vector2[objUVs.Length];
-        norms = new Vector3[objNorms.Length];
-
         for (int i = 0; i < objVerts.Length; ++i)
         {
             verts[i] = new Vector3(
                 objVerts[i][0],
                 objVerts[i][1],
-                objVerts[i][2]);
+                objVerts[i][2]
+            );
+        }
+    }
 
+    static void GetNormals(ref Vector3[] norms)
+    {
+        var objNorms = Facade.GetNormals();
+        if (objNorms == null) return;
+        norms = new Vector3[objNorms.Length];
+        for (int i = 0; i < objNorms.Length; ++i)
+        {
             norms[i] = new Vector3(
                 objNorms[i][0],
                 objNorms[i][1],
-                objNorms[i][2]);
+                objNorms[i][2]
+            );
+        }
+    }
 
+    static void GetUVs(ref Vector2[] uvs)
+    {
+        var objUVs = Facade.GetUVs();
+        if (objUVs == null) return;
+        uvs = new Vector2[objUVs.Length];
+        for (int i = 0; i < objUVs.Length; ++i)
+        {
             uvs[i] = new Vector2(
                 objUVs[i][0],
-                objUVs[i][1]);
+                objUVs[i][1]
+            );
         }
-
-        return objCount;
     }
 
     static Texture2D CreateTexture2D(string path)
@@ -139,51 +169,51 @@ public static class Geometry
     static void ChangeBlendMode(Material material, BlendMode blendMode)
     {
         switch (blendMode)
-         {
-             case BlendMode.Opaque:
-                 material.SetInt("_SrcBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.One);
-                 material.SetInt("_DstBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.Zero);
-                 material.SetInt("_ZWrite", 1);
-                 material.DisableKeyword("_ALPHATEST_ON");
-                 material.DisableKeyword("_ALPHABLEND_ON");
-                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                 material.renderQueue = -1;
-                 break;
-             case BlendMode.Cutout:
-                 material.SetInt("_SrcBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.One);
-                 material.SetInt("_DstBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.Zero);
-                 material.SetInt("_ZWrite", 1);
-                 material.EnableKeyword("_ALPHATEST_ON");
-                 material.DisableKeyword("_ALPHABLEND_ON");
-                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                 material.renderQueue = 2450;
-                 break;
-             case BlendMode.Fade:
-                 material.SetInt("_SrcBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-                 material.SetInt("_DstBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                 material.SetInt("_ZWrite", 0);
-                 material.DisableKeyword("_ALPHATEST_ON");
-                 material.EnableKeyword("_ALPHABLEND_ON");
-                 material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-                 material.renderQueue = 3000;
-                 break;
-             case BlendMode.Transparent:
-                 material.SetInt("_SrcBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.One);
-                 material.SetInt("_DstBlend", 
-                    (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-                 material.SetInt("_ZWrite", 0);
-                 material.DisableKeyword("_ALPHATEST_ON");
-                 material.DisableKeyword("_ALPHABLEND_ON");
-                 material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-                 material.renderQueue = 3000;
-                 break;
-         }
+        {
+            case BlendMode.Opaque:
+                material.SetInt("_SrcBlend",
+                   (int)UnityEngine.Rendering.BlendMode.One);
+                material.SetInt("_DstBlend",
+                   (int)UnityEngine.Rendering.BlendMode.Zero);
+                material.SetInt("_ZWrite", 1);
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = -1;
+                break;
+            case BlendMode.Cutout:
+                material.SetInt("_SrcBlend",
+                   (int)UnityEngine.Rendering.BlendMode.One);
+                material.SetInt("_DstBlend",
+                   (int)UnityEngine.Rendering.BlendMode.Zero);
+                material.SetInt("_ZWrite", 1);
+                material.EnableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 2450;
+                break;
+            case BlendMode.Fade:
+                material.SetInt("_SrcBlend",
+                   (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                material.SetInt("_DstBlend",
+                   (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                material.SetInt("_ZWrite", 0);
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.EnableKeyword("_ALPHABLEND_ON");
+                material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 3000;
+                break;
+            case BlendMode.Transparent:
+                material.SetInt("_SrcBlend",
+                   (int)UnityEngine.Rendering.BlendMode.One);
+                material.SetInt("_DstBlend",
+                   (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                material.SetInt("_ZWrite", 0);
+                material.DisableKeyword("_ALPHATEST_ON");
+                material.DisableKeyword("_ALPHABLEND_ON");
+                material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                material.renderQueue = 3000;
+                break;
+        }
     }
 }

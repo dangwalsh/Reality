@@ -22,9 +22,8 @@ public class Main : MonoBehaviour
         this.mRecognizer = new GestureRecognizer();
         this.mRecognizer.TappedEvent += OnTapped;
         this.mRecognizer.StartCapturingGestures();
-        //ViewManager.FileChangedEvent += OnFileChanged;
 #else
-        Geometry.CreateObjects(this.Path);
+        Geometry.Initialize(this.Path);
 #endif
     }
 
@@ -48,6 +47,6 @@ public class Main : MonoBehaviour
 
     void OnFileChanged(object sender, EventArgs e)
     {
-        Geometry.CreateObjects(sender as string);
+        Geometry.Initialize(sender as string);
     }
 }
