@@ -2,24 +2,24 @@
 using System.IO;
 using UnityEngine;
 using Reality.ObjReader;
+using System.Linq;
 
 public static class Geometry
 {
-    static string directory;
+    static string directory = "";
 
     public static void Initialize(string path)
     {
         directory = GetDirectoryName(path);
 
-        var count = Facade.ImportObjects(path);
-
+        int count = Facade.ImportObjects(path);
         Vector3[] verts = null;
         Vector3[] norms = null;
         Vector2[] uvs = null;
 
-        GetVertices(ref verts);
-        GetNormals(ref norms);
-        GetUVs(ref uvs);
+        ConvertVertices(ref verts);
+        ConvertNormals(ref norms);
+        ConvertUVs(ref uvs);
 
         CreateObjects(count, ref verts, ref norms, ref uvs);
     }
@@ -37,12 +37,15 @@ public static class Geometry
 
             gameObject.AddComponent<MeshFilter>();
             var mesh = gameObject.GetComponent<MeshFilter>().mesh;
-            var triangles = Facade.GetVertexIndexOfObject(i);
 
-            mesh.vertices = verts;
-            mesh.uv = uvs;
-            mesh.normals = norms;
-            mesh.triangles = triangles;
+            var vertIndex = Facade.GetVertexIndexOfObject(i);
+            var uvIndex = Facade.GetUVIndexOfObject(i);
+            var normIndex = Facade.GetNormalIndexOfObject(i);
+
+            mesh.vertices = CreateIndexedVerts(ref verts, ref vertIndex);
+            mesh.uv = CreateIndexedUVs(ref uvs, ref uvIndex);
+            mesh.normals = CreateIndexedNormals(ref norms, ref normIndex);
+            mesh.triangles = Enumerable.Range(0, vertIndex.Length).ToArray();
 
             if (mesh.normals == null) mesh.RecalculateNormals();
 
@@ -51,6 +54,74 @@ public static class Geometry
             var material = CreateMaterial(i, "Standard");
             CreateTextureMaps(i, ref material);
             renderer.material = material;
+        }
+    }
+
+    static Vector3[] CreateIndexedNormals(ref Vector3[] norms, ref int[] index)
+    {
+        var normals = new Vector3[index.Length];
+        for (int i = 0; i < index.Length; ++i)
+            normals[i] = norms[index[i]];
+        return normals;
+    }
+
+    static Vector2[] CreateIndexedUVs(ref Vector2[] uvs, ref int[] index)
+    {
+        var coords = new Vector2[index.Length];
+        for (int i = 0; i < index.Length; ++i)
+            coords[i] = uvs[index[i]];
+        return coords;
+    }
+
+    static Vector3[] CreateIndexedVerts(ref Vector3[] verts, ref int[] index)
+    {
+        var vertices = new Vector3[index.Length];
+        for (int i = 0; i < index.Length; ++i)
+            vertices[i] = verts[index[i]];
+        return vertices;
+    }
+
+    static void ConvertVertices(ref Vector3[] verts)
+    {
+        var objVerts = Facade.GetVertices();
+        if (objVerts == null) return;
+        verts = new Vector3[objVerts.Length];
+        for (int i = 0; i < objVerts.Length; ++i)
+        {
+            verts[i] = new Vector3(
+                objVerts[i][0],
+                objVerts[i][1],
+                objVerts[i][2]
+            );
+        }
+    }
+
+    static void ConvertNormals(ref Vector3[] norms)
+    {
+        var objNorms = Facade.GetNormals();
+        if (objNorms == null) return;
+        norms = new Vector3[objNorms.Length];
+        for (int i = 0; i < objNorms.Length; ++i)
+        {
+            norms[i] = new Vector3(
+                objNorms[i][0],
+                objNorms[i][1],
+                objNorms[i][2]
+            );
+        }
+    }
+
+    static void ConvertUVs(ref Vector2[] uvs)
+    {
+        var objUVs = Facade.GetUVs();
+        if (objUVs == null) return;
+        uvs = new Vector2[objUVs.Length];
+        for (int i = 0; i < objUVs.Length; ++i)
+        {
+            uvs[i] = new Vector2(
+                objUVs[i][0],
+                objUVs[i][1]
+            );
         }
     }
 
@@ -63,7 +134,7 @@ public static class Geometry
             {
                 var texture = CreateTexture2D(mapKd);
                 var texScale = Facade.GetScaleOfMapOfObject("Diffuse", index);
-                var scale = new Vector2(texScale[0], texScale[1]);
+                var scale = new Vector2(1 / texScale[0], 1 / texScale[1]);
                 material.SetTexture("_MainTex", texture);
                 material.SetTextureScale("_MainTex", scale);
             }
@@ -80,9 +151,9 @@ public static class Geometry
             {
                 var texture = CreateTexture2D(mapBump);
                 var texScale = Facade.GetScaleOfMapOfObject("Bump", index);
-                var scale = new Vector2(texScale[0], texScale[1]);
+                var scale = new Vector2(1 / texScale[0], 1 / texScale[1]);
                 material.SetTexture("_BumpMap", texture);
-                material.SetTextureScale("_BumpTex", scale);
+                material.SetTextureScale("_BumpMap", scale);
             }
             catch (FileNotFoundException)
             {
@@ -96,57 +167,14 @@ public static class Geometry
         var shader = Shader.Find(shaderType);
         var material = new Material(shader);
         var color = Facade.GetColorOfChannelOfObject("Diffuse", index);
-        material.name = Facade.GetNameOfMaterialOfObject(index);
+        var name = Facade.GetNameOfMaterialOfObject(index);
+        material.name = name;
         material.color = new Color(color[0], color[1], color[2], color[3]);
 
         if (material.color.a < 1.0f)
             ChangeBlendMode(material, BlendMode.Transparent);
 
         return material;
-    }
-
-    static void GetVertices(ref Vector3[] verts)
-    {
-        var objVerts = Facade.GetVertices();
-        if (objVerts == null) return;
-        verts = new Vector3[objVerts.Length];
-        for (int i = 0; i < objVerts.Length; ++i)
-        {
-            verts[i] = new Vector3(
-                objVerts[i][0],
-                objVerts[i][1],
-                objVerts[i][2]
-            );
-        }
-    }
-
-    static void GetNormals(ref Vector3[] norms)
-    {
-        var objNorms = Facade.GetNormals();
-        if (objNorms == null) return;
-        norms = new Vector3[objNorms.Length];
-        for (int i = 0; i < objNorms.Length; ++i)
-        {
-            norms[i] = new Vector3(
-                objNorms[i][0],
-                objNorms[i][1],
-                objNorms[i][2]
-            );
-        }
-    }
-
-    static void GetUVs(ref Vector2[] uvs)
-    {
-        var objUVs = Facade.GetUVs();
-        if (objUVs == null) return;
-        uvs = new Vector2[objUVs.Length];
-        for (int i = 0; i < objUVs.Length; ++i)
-        {
-            uvs[i] = new Vector2(
-                objUVs[i][0],
-                objUVs[i][1]
-            );
-        }
     }
 
     static Texture2D CreateTexture2D(string path)
