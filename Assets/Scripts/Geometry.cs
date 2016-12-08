@@ -6,7 +6,7 @@ using System.Linq;
 
 public static class Geometry
 {
-    const int MAXVERTS = 18; //65536;
+    const int MAXVERTS = 65536;
     static string directory = "";
 
     public static void Initialize(string path)
