@@ -6,6 +6,7 @@ using System.Linq;
 
 public static class Geometry
 {
+    const int MAXVERTS = 18; //65536;
     static string directory = "";
 
     public static void Initialize(string path)
@@ -24,149 +25,129 @@ public static class Geometry
         CreateObjects(count, verts, norms, uvs);
     }
 
-    //static void CreateObjects(int count,
-    //    ref Vector3[] verts,
-    //    ref Vector3[] objNorms,
-    //    ref Vector2[] uvs
-    //)
-    //{
-    //    for (int i = 0; i < count; ++i)
-    //    {
-    //        var vertIndex = Facade.GetVertexIndexOfObject(i);
-    //        var uvIndex = Facade.GetUVIndexOfObject(i);
-    //        var normIndex = Facade.GetNormalIndexOfObject(i);
-    //        var name = Facade.GetNameOfObject(i);
-
-    //        var gameObject = GameObject.Find(name);
-
-    //        if (gameObject == null)
-    //        {
-    //            gameObject = new GameObject(name);
-    //            gameObject.AddComponent<MeshFilter>();
-    //            gameObject.AddComponent<MeshRenderer>();
-
-    //            var renderer = gameObject.GetComponent<MeshRenderer>();
-    //            var material = CreateMaterial(i, "Standard");
-
-    //            CreateTextureMaps(i, ref material);
-    //            renderer.material = material;
-    //        }
-
-    //        var mesh = gameObject.GetComponent<MeshFilter>().mesh;
-    //        var meshVerts = mesh.vertices;
-    //        var meshNorms = mesh.normals;
-    //        var meshUVs = mesh.uv;
-
-    //        var totalVerts = AddVerts(meshVerts, verts, vertIndex);
-    //        var totalUVs = AddUVs(meshUVs, uvs, uvIndex);
-    //        var totalNorms = AddNormals(meshNorms, objNorms, normIndex);
-
-    //        mesh.vertices = totalVerts;  
-    //        mesh.uv = totalUVs;
-    //        mesh.normals = totalNorms;
-    //        mesh.triangles = Enumerable.Range(0, mesh.vertices.Length).ToArray();
-
-    //        if (mesh.normals == null) mesh.RecalculateNormals();
-    //    }
-    //}
-
     static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs)
     {
-        for (int i = 0; i < count; ++i)
+        for (int obj = 0; obj < count; ++obj)
         {
-            var vertIndex = Facade.GetVertexIndexOfObject(i);
-            var uvIndex = Facade.GetUVIndexOfObject(i);
-            var normIndex = Facade.GetNormalIndexOfObject(i);
-            var name = Facade.GetNameOfObject(i);
+            var vertIndex = Facade.GetVertexIndexOfObject(obj);
+            var uvIndex = Facade.GetUVIndexOfObject(obj);
+            var normIndex = Facade.GetNormalIndexOfObject(obj);
 
+            var divs = Math.Ceiling((double)vertIndex.Length / MAXVERTS);
 
-            var gameObject = new GameObject(name);
-            gameObject.AddComponent<MeshFilter>();
-            gameObject.AddComponent<MeshRenderer>();
+            var name = Facade.GetNameOfObject(obj);
+            var parentObject = GameObject.Find(name);
 
-            var renderer = gameObject.GetComponent<MeshRenderer>();
-            var material = CreateMaterial(i, "Standard");
+            if (parentObject == null)
+            {
+                parentObject = new GameObject(name + " Root");
+                var material = CreateMaterial(obj, "Standard");
+                CreateTextureMaps(obj, ref material);
+                parentObject.AddComponent<MeshRenderer>();
+                parentObject.GetComponent<MeshRenderer>().material = material;
+            }
 
-            CreateTextureMaps(i, ref material);
-            renderer.material = material;
+            for (int sector = 0; sector < divs; ++sector)
+            {
+                var gameObject = new GameObject(name);
 
+                gameObject.AddComponent<MeshRenderer>();
+                gameObject.GetComponent<MeshRenderer>().material =
+                    parentObject.GetComponent<MeshRenderer>().material;
+                gameObject.AddComponent<MeshFilter>();
 
-            var mesh = gameObject.GetComponent<MeshFilter>().mesh;
+                var mesh = gameObject.GetComponent<MeshFilter>().mesh;
 
-            mesh.vertices = GetVerts(verts, vertIndex);
-            mesh.uv = GetUVs(uvs, uvIndex);
-            mesh.normals = GetNorms(norms, normIndex);
-            mesh.triangles = Enumerable.Range(0, mesh.vertices.Length).ToArray();
+                mesh.vertices = GetVerts(verts, vertIndex, sector);
+                mesh.uv = GetUVs(uvs, uvIndex, sector);
+                mesh.normals = GetNorms(norms, normIndex, sector);
+                mesh.triangles = Enumerable
+                    .Range(0, mesh.vertices.Length).ToArray();
 
-            if (mesh.normals.Length == 0) mesh.RecalculateNormals();
+                if (mesh.normals.Length == 0) mesh.RecalculateNormals();
+
+                gameObject.transform.parent = parentObject.transform;
+            }
         }
     }
 
-    static Vector3[] GetNorms(Vector3[] norms, int[] index)
+    static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter)
     {
-        var normals = new Vector3[index.Length];
-        for (int i = 0; i < index.Length; ++i)
+        var sector = index.Length - MAXVERTS * iter;
+        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
+        var start = MAXVERTS * iter;
+
+        var normals = new Vector3[end];
+        for (int i = start; i < end; ++i)
             normals[i] = norms[index[i]];
         return normals;
     }
 
-    static Vector2[] GetUVs(Vector2[] uvs, int[] index)
+    static Vector2[] GetUVs(Vector2[] uvs, int[] index, int iter)
     {
-        var coords = new Vector2[index.Length];
-        for (int i = 0; i < index.Length; ++i)
+        var sector = index.Length - MAXVERTS * iter;
+        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
+        var start = MAXVERTS * iter;
+
+        var coords = new Vector2[end];
+        for (int i = start; i < end; ++i)
             coords[i] = uvs[index[i]];
         return coords;
     }
 
-    static Vector3[] GetVerts(Vector3[] verts, int[] index)
+    static Vector3[] GetVerts(Vector3[] verts, int[] index, int iter)
     {
-        var vertices = new Vector3[index.Length];
-        for (int i = 0; i < index.Length; ++i)
+        var sector = index.Length - MAXVERTS * iter;
+        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
+        var start = MAXVERTS * iter;
+
+        var vertices = new Vector3[end];
+        for (int i = start; i < end; ++i)
             vertices[i] = verts[index[i]];
         return vertices;
     }
 
-    static Vector3[] AddNorms( Vector3[] meshNorms, Vector3[] objNorms, int[] index)
-    {
-        var tempNorms = new Vector3[index.Length];
+    // static Vector3[] AddNorms( Vector3[] meshNorms, Vector3[] objNorms, int[] index)
+    // {
+    //     var tempNorms = new Vector3[index.Length];
 
-        for (int i = 0; i < index.Length; ++i)
-            tempNorms[i] = objNorms[index[i]];
+    //     for (int i = 0; i < index.Length; ++i)
+    //         tempNorms[i] = objNorms[index[i]];
 
-        var normals = new Vector3[meshNorms.Length + tempNorms.Length];
-        meshNorms.CopyTo(normals, 0);
-        tempNorms.CopyTo(normals, meshNorms.Length);
+    //     var normals = new Vector3[meshNorms.Length + tempNorms.Length];
+    //     meshNorms.CopyTo(normals, 0);
+    //     tempNorms.CopyTo(normals, meshNorms.Length);
 
-        return normals;
-    }
+    //     return normals;
+    // }
 
-    static Vector2[] AddUVs(Vector2[] meshUVs, Vector2[] objUVs, int[] index)
-    {
-        var tempUVs = new Vector2[index.Length];
+    // static Vector2[] AddUVs(Vector2[] meshUVs, Vector2[] objUVs, int[] index)
+    // {
+    //     var tempUVs = new Vector2[index.Length];
 
-        for (int i = 0; i < index.Length; ++i)
-            tempUVs[i] = objUVs[index[i]];
+    //     for (int i = 0; i < index.Length; ++i)
+    //         tempUVs[i] = objUVs[index[i]];
 
-        var coords = new Vector2[meshUVs.Length + tempUVs.Length];
-        meshUVs.CopyTo(coords, 0);
-        tempUVs.CopyTo(coords, meshUVs.Length);
+    //     var coords = new Vector2[meshUVs.Length + tempUVs.Length];
+    //     meshUVs.CopyTo(coords, 0);
+    //     tempUVs.CopyTo(coords, meshUVs.Length);
 
-        return coords;
-    }
+    //     return coords;
+    // }
 
-    static Vector3[] AddVerts(Vector3[] meshVerts, Vector3[] objVerts, int[] index)
-    {
-        var tempVerts = new Vector3[index.Length];
+    // static Vector3[] AddVerts(Vector3[] meshVerts, Vector3[] objVerts, int[] index)
+    // {
+    //     var tempVerts = new Vector3[index.Length];
 
-        for (int i = 0; i < index.Length; ++i)
-            tempVerts[i] = objVerts[index[i]];
+    //     for (int i = 0; i < index.Length; ++i)
+    //         tempVerts[i] = objVerts[index[i]];
 
-        var vertices = new Vector3[meshVerts.Length + tempVerts.Length];
-        meshVerts.CopyTo(vertices, 0);
-        tempVerts.CopyTo(vertices, meshVerts.Length);
+    //     var vertices = new Vector3[meshVerts.Length + tempVerts.Length];
+    //     meshVerts.CopyTo(vertices, 0);
+    //     tempVerts.CopyTo(vertices, meshVerts.Length);
 
-        return vertices;
-    }
+    //     return vertices;
+    // }
 
     static void ConvertVertices(ref Vector3[] verts)
     {
