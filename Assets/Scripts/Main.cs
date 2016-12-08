@@ -9,6 +9,7 @@ using UnityEngine.VR.WSA.Input;
 
 public class Main : MonoBehaviour
 {
+    GameObject rootObject;
 #if !UNITY_EDITOR
     GestureRecognizer mRecognizer;
 #else
@@ -17,6 +18,7 @@ public class Main : MonoBehaviour
 
     void Start()
     {
+        this.rootObject = new GameObject("Root");
 #if !UNITY_EDITOR
         ViewManager.FilePath = "";
         this.mRecognizer = new GestureRecognizer();
@@ -29,10 +31,11 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        rootObject.transform.Rotate(Vector3.up * Time.deltaTime * 10);
 #if !UNITY_EDITOR
         if (ViewManager.FilePath != "")
         {
-            Geometry.CreateObjects(ViewManager.FilePath);
+            Geometry.Initialize(ViewManager.FilePath);
             ViewManager.FilePath = "";
         }
 #endif

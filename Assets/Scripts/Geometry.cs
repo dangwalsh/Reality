@@ -6,14 +6,16 @@ using System.Linq;
 
 public static class Geometry
 {
-    const int MAXVERTS = 65536;
+    const int MAXVERTS = 63000;//65536;
     static string directory = "";
 
     public static void Initialize(string path)
     {
         directory = GetDirectoryName(path);
-
+        
         int count = Facade.ImportObjects(path);
+        float[] bounds = Facade.GetBounds();
+        float size = bounds.Max();
         Vector3[] verts = null;
         Vector3[] norms = null;
         Vector2[] uvs = null;
@@ -22,11 +24,12 @@ public static class Geometry
         ConvertNormals(ref norms);
         ConvertUVs(ref uvs);
 
-        CreateObjects(count, verts, norms, uvs);
+        CreateObjects(count, verts, norms, uvs, size);
     }
-
-    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs)
+                                                                                
+    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size)
     {
+        var rootObject = GameObject.Find("Root");
         for (int obj = 0; obj < count; ++obj)
         {
             var vertIndex = Facade.GetVertexIndexOfObject(obj);
@@ -40,7 +43,8 @@ public static class Geometry
 
             if (parentObject == null)
             {
-                parentObject = new GameObject(name + " Root");
+                parentObject = new GameObject(name + " Parent");
+                parentObject.transform.parent = rootObject.transform;
                 var material = CreateMaterial(obj, "Standard");
                 CreateTextureMaps(obj, ref material);
                 parentObject.AddComponent<MeshRenderer>();
@@ -69,13 +73,15 @@ public static class Geometry
                 gameObject.transform.parent = parentObject.transform;
             }
         }
+        rootObject.transform.localScale /= (size / 10);
+        rootObject.transform.position += new Vector3(0.0f, 0.0f, 10.0f);
     }
 
     static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter)
     {
-        var sector = index.Length - MAXVERTS * iter;
-        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
         var start = MAXVERTS * iter;
+        var sector = index.Length - start;
+        var end = (sector < MAXVERTS) ? sector + start : MAXVERTS +  start;
 
         var normals = new Vector3[end];
         for (int i = start; i < end; ++i)
@@ -85,9 +91,9 @@ public static class Geometry
 
     static Vector2[] GetUVs(Vector2[] uvs, int[] index, int iter)
     {
-        var sector = index.Length - MAXVERTS * iter;
-        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
         var start = MAXVERTS * iter;
+        var sector = index.Length - start;
+        var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
 
         var coords = new Vector2[end];
         for (int i = start; i < end; ++i)
@@ -97,57 +103,15 @@ public static class Geometry
 
     static Vector3[] GetVerts(Vector3[] verts, int[] index, int iter)
     {
-        var sector = index.Length - MAXVERTS * iter;
-        var end = (sector < MAXVERTS) ? sector + MAXVERTS * iter : MAXVERTS * (iter + 1);
         var start = MAXVERTS * iter;
+        var sector = index.Length - start;
+        var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
 
         var vertices = new Vector3[end];
         for (int i = start; i < end; ++i)
             vertices[i] = verts[index[i]];
         return vertices;
     }
-
-    // static Vector3[] AddNorms( Vector3[] meshNorms, Vector3[] objNorms, int[] index)
-    // {
-    //     var tempNorms = new Vector3[index.Length];
-
-    //     for (int i = 0; i < index.Length; ++i)
-    //         tempNorms[i] = objNorms[index[i]];
-
-    //     var normals = new Vector3[meshNorms.Length + tempNorms.Length];
-    //     meshNorms.CopyTo(normals, 0);
-    //     tempNorms.CopyTo(normals, meshNorms.Length);
-
-    //     return normals;
-    // }
-
-    // static Vector2[] AddUVs(Vector2[] meshUVs, Vector2[] objUVs, int[] index)
-    // {
-    //     var tempUVs = new Vector2[index.Length];
-
-    //     for (int i = 0; i < index.Length; ++i)
-    //         tempUVs[i] = objUVs[index[i]];
-
-    //     var coords = new Vector2[meshUVs.Length + tempUVs.Length];
-    //     meshUVs.CopyTo(coords, 0);
-    //     tempUVs.CopyTo(coords, meshUVs.Length);
-
-    //     return coords;
-    // }
-
-    // static Vector3[] AddVerts(Vector3[] meshVerts, Vector3[] objVerts, int[] index)
-    // {
-    //     var tempVerts = new Vector3[index.Length];
-
-    //     for (int i = 0; i < index.Length; ++i)
-    //         tempVerts[i] = objVerts[index[i]];
-
-    //     var vertices = new Vector3[meshVerts.Length + tempVerts.Length];
-    //     meshVerts.CopyTo(vertices, 0);
-    //     tempVerts.CopyTo(vertices, meshVerts.Length);
-
-    //     return vertices;
-    // }
 
     static void ConvertVertices(ref Vector3[] verts)
     {
@@ -254,7 +218,7 @@ public static class Geometry
 
     static Texture2D CreateTexture2D(string path)
     {
-        var texture = new Texture2D(4, 4, TextureFormat.DXT1, false);
+        var texture = new Texture2D(4, 4, TextureFormat.DXT5, true);
         var bytes = File.ReadAllBytes(
             directory + Path.DirectorySeparatorChar + path);
         var result = texture.LoadImage(bytes);
