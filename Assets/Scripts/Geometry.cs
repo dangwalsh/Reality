@@ -73,7 +73,7 @@ public static class Geometry
                 gameObject.transform.parent = parentObject.transform;
             }
         }
-        rootObject.transform.localScale /= (size / 10);
+        rootObject.transform.localScale /= (size / 5);
         rootObject.transform.position += new Vector3(0.0f, 0.0f, 10.0f);
     }
 
