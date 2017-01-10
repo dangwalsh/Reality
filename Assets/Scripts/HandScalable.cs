@@ -87,7 +87,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Starts dragging the object.
+        /// Starts scaling the object.
         /// </summary>
         public void StartScaling()
         {
@@ -148,9 +148,9 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Enables or disables dragging.
+        /// Enables or disables scaling.
         /// </summary>
-        /// <param name="isEnabled">Indicates whether dragging shoudl be enabled or disabled.</param>
+        /// <param name="isEnabled">Indicates whether dragging should be enabled or disabled.</param>
         public void SetScaling(bool isEnabled)
         {
             if (IsScalingEnabled == isEnabled)
@@ -167,7 +167,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Update the position of the object being dragged.
+        /// Update the scale of the object being dragged.
         /// </summary>
         private void UpdateScaling()
         {
@@ -201,7 +201,7 @@ namespace HoloToolkit.Unity.InputModule
             }
 
             // Apply Final Position
-            var scaleFactor = newHandPosition.y * ScalingScale;
+            var scaleFactor = newHandPosition.x * ScalingScale;
             HostTransform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
 
             if (IsKeepUpright)
@@ -212,7 +212,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         /// <summary>
-        /// Stops dragging the object.
+        /// Stops scaling the object.
         /// </summary>
         public void StopScaling()
         {
