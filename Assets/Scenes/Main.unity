@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostTransform: {fileID: 395109079}
   Factor: 1
-  Minimum: 0.01
+  Minimum: 0
   Maximum: 100
 --- !u!114 &1250133356
 MonoBehaviour:
