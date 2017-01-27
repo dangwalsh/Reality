@@ -6,6 +6,7 @@ using UnityEngine;
 public class ControlManager : MonoBehaviour, IInputClickHandler
 {
     bool controlling;
+
     void Start()
     {
 

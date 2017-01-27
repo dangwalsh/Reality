@@ -9,7 +9,7 @@ public static class Geometry
     const int MAXVERTS = 63000;//65536;
     static string directory = "";
 
-    public static float[] Initialize(string path, GameObject root)
+    public static void Initialize(string path, GameObject root)
     {
         directory = GetDirectoryName(path);
         
@@ -26,51 +26,48 @@ public static class Geometry
 
         CreateObjects(count, verts, norms, uvs, size, root);
 
-        //var cube = UnityEngine.Object.Instantiate(Resources.Load<GameObject>("Bounding"));
         var bounding = root.transform.Find("Bounding").gameObject;
-        bounding.transform.parent = root.transform;
-        bounding.transform.localPosition = new Vector3(0, 0, 0);
         bounding.transform.localScale = new Vector3(bounds[0], bounds[1], bounds[2]);
         bounding.SetActive(false);
-
-        return bounds;
     }
                                                                                 
     static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject root)
     {
-        var rootObject = root;
+        root.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        root.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+
         for (int obj = 0; obj < count; ++obj)
         {
             var vertIndex = Facade.GetVertexIndexOfObject(obj);
             var uvIndex = Facade.GetUVIndexOfObject(obj);
             var normIndex = Facade.GetNormalIndexOfObject(obj);
-
             var divs = Math.Ceiling((double)vertIndex.Length / MAXVERTS);
-
             var name = Facade.GetNameOfObject(obj);
-            var parentObject = GameObject.Find(name);
+            var parent = GameObject.Find(name);
 
-            if (parentObject == null)
+            if (parent == null)
             {
-                parentObject = new GameObject(name + " Parent");
-                parentObject.transform.parent = rootObject.transform;
+                parent = new GameObject(name + " Parent");
+                parent.transform.parent = root.transform;
+
                 var material = CreateMaterial(obj, "Standard");
+
                 CreateTextureMaps(obj, ref material);
 
-                parentObject.AddComponent<MeshRenderer>();
-                parentObject.GetComponent<MeshRenderer>().material = material;
-            }
+                parent.AddComponent<MeshRenderer>();
+                parent.GetComponent<MeshRenderer>().material = material;
+            } 
 
             for (int sector = 0; sector < divs; ++sector)
             {
-                var gameObject = new GameObject(name);
+                var child = new GameObject(name);
 
-                gameObject.AddComponent<MeshRenderer>();
-                gameObject.GetComponent<MeshRenderer>().material =
-                    parentObject.GetComponent<MeshRenderer>().material;
-                gameObject.AddComponent<MeshFilter>();
+                child.AddComponent<MeshRenderer>();
+                child.GetComponent<MeshRenderer>().material =
+                    parent.GetComponent<MeshRenderer>().material;
+                child.AddComponent<MeshFilter>();
 
-                var mesh = gameObject.GetComponent<MeshFilter>().mesh;
+                var mesh = child.GetComponent<MeshFilter>().mesh;
 
                 mesh.vertices = GetVerts(verts, vertIndex, sector);
                 mesh.uv = GetUVs(uvs, uvIndex, sector);
@@ -80,12 +77,13 @@ public static class Geometry
 
                 if (mesh.normals.Length == 0) mesh.RecalculateNormals();
 
-                gameObject.AddComponent<MeshCollider>();
-                gameObject.transform.parent = parentObject.transform;
+                child.AddComponent<MeshCollider>();
+                child.transform.parent = parent.transform;
             }
         }
-        rootObject.transform.localScale /= (size / 5);
-        rootObject.transform.position += new Vector3(0.0f, 0.0f, 20.0f);
+
+        root.transform.localScale /= (size / 5);
+        root.transform.position += new Vector3(0, 0, 20);
     }
 
     static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter)
