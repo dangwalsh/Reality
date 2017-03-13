@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2188dbbbc01f831448aae370ecaa6b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 1228951421321312, guid: df00b596e6fe9d7488c910a4c4c24754, type: 2}
+  Prefab: {fileID: 1156025460709124, guid: df00b596e6fe9d7488c910a4c4c24754, type: 2}
   Path: C:\Users\22791\Desktop\test\test.obj
 --- !u!4 &610104044
 Transform:
