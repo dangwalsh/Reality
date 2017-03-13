@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap2="http://schemas.microsoft.com/appx/manifest/uap/windows10/2" IgnorableNamespaces="uap uap2 mp" xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10">
-  <Identity Name="Reality" Publisher="CN=Gensler" Version="1.0.0.1" />
+  <Identity Name="Reality" Publisher="CN=Gensler" Version="1.0.0.3" />
   <mp:PhoneIdentity PhoneProductId="aa3b4ad6-ce2e-428a-9983-943506cb51b0" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Reality</DisplayName>

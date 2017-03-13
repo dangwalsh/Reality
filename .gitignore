@@ -41,3 +41,7 @@ App/
 
 # Settings
 ProjectSettings/
+
+# Build
+Debug/
+Release/

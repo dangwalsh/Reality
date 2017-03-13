@@ -5,14 +5,14 @@
 # Write a line equal to 'overwrite-all' (without quotes) to overwrite everything (preserved accross builds)
 # Write a line equal to 'keep-all' (without quotes) to keep files regardless their modification (preserved accross builds)
 # Default behavior is to never overwrite files
-Reality.sln: 08F9E9DA20774FA653958116AEB6AA2F
+Reality.sln: modified
 GeneratedProjects\UWP\Assembly-CSharp\project.json: 4FCF72A4D5EDB37E24C206A7BCFE7AF1
 GeneratedProjects\UWP\Assembly-CSharp-firstpass\project.json: 4FCF72A4D5EDB37E24C206A7BCFE7AF1
 Reality\App.cs: 6F1AFBF09ACADEBD6C13253176F93B98
-Reality\Package.appxmanifest: C7725B4E32AF74046E7E031FEAAFB363
+Reality\Package.appxmanifest: modified
 Reality\project.json: 1D02BC64BAC0D041019673A1C4C51737
-Reality\Reality.csproj: 073B26A2D07403BA4CCA53ED7897B92C
-Reality\Reality.csproj.user: BEFB8AC4886C4CFDD3C68445D6F19B04
+Reality\Reality.csproj: D0C2C37D40B8961181B401B98C1B8E42
+Reality\Reality.csproj.user: modified
 Reality\Assets\SplashScreen.scale-200.png: 60618416282ED104FD1473935716045D
 Reality\Assets\Square150x150Logo.scale-200.png: E02834B4A5DFB97FF8E212C1CACBB084
 Reality\Assets\Square44x44Logo.scale-200.png: 6C6EF27184ABE9D870A9D564953775DE
