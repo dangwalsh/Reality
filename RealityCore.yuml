@@ -1,0 +1,18 @@
+// reality app class diagram
+// {type:class}
+// {direction:topDown}
+
+[ModelManager]
+[FileManager]
+[GestureManager]
+[UIManager]
+
+[Storage]
+[View]
+[Geometry]
+[File]
+[Gizmo]
+[Menu]
+[Sound]
+[Input]
+[Gaze]
