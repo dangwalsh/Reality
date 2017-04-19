@@ -1,18 +1,64 @@
 // reality app class diagram
 // {type:class}
-// {direction:topDown}
+// {direction:leftToRight}
+// {generate:true}
 
-[ModelManager]
+// GameObject scripts
+[SceneManager]
 [FileManager]
-[GestureManager]
-[UIManager]
+[InputManager]
+[ObjectManager]
+[MenuManager]
+[CameraManager]
+[CursorManager]
 
-[Storage]
-[View]
-[Geometry]
+// Other scripts
+[StoragePlugin{bg:lightgray}]
+[Scene]
 [File]
-[Gizmo]
-[Menu]
-[Sound]
+[TransformGizmo]
+[MainMenu]
+[ControlMenu]
+[AudioSource]
 [Input]
 [Gaze]
+[OneDrive]
+[TransformCursor]
+
+
+// Relationships
+[MenuManager]++->[MainMenu]
+[MainMenu]-.-open>[File]
+[MainMenu]-.-sync>[StoragePlugin{bg:lightgray}]
+
+[FileManager]<>->[StoragePlugin{bg:lightgray}]
+[StoragePlugin{bg:lightgray}]->[File]
+[StoragePlugin{bg:lightgray}]-.->[OneDrive]
+
+[SceneManager]<>->[ReaderPlugin{bg:lightgray}]
+[ReaderPlugin{bg:lightgray}]-.->[File]
+[ReaderPlugin{bg:lightgray}]->[Scene]
+
+[ObjectManager]->[AudioSource]
+[ObjectManager]++->[TransformGizmo]
+[ObjectManager]->[ControlMenu]
+[TransformGizmo]-.->[AudioSource]
+[TransformGizmo]-.->[Input]
+[TransformGizmo]-.->[Gaze]
+[TransformGizmo]-.->[Scene]
+[TransformGizmo]-.->[ControlMenu]
+
+[InputManager]->[Input]
+[InputManager]->[Gaze]
+
+[CameraManager]++->[HoloLensCamera]
+[HoloLensCamera]-.->[Scene]
+
+[CursorManager]++->[TransformCursor]
+[TransformCursor]-.->[Gaze]
+[TransformCursor]-.->[Input]
+
+
+// Notes
+[note: MainMenu needs to be aware of OBJ files in LocalCache]
+[note: ReaderPlugin Update() checks for Path prop to be set]

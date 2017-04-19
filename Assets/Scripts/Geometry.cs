@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !UNITY_EDITOR
+using System;
 using System.IO;
 using UnityEngine;
 using Reality.ObjReader;
@@ -9,11 +10,12 @@ public static class Geometry
     const int MAXVERTS = 63000;//65536;
     static string directory = "";
 
-    public static void Initialize(string path, GameObject root)
+    public static float Initialize(string path, GameObject scene, Transform root)
     {
         directory = GetDirectoryName(path);
-        
-        int count = Facade.ImportObjects(path);
+        var zipTask = Facade.UnzipFileAsync(path);
+        var objPath = zipTask.Result;
+        int count = Facade.ImportObjects(objPath);
         float[] bounds = Facade.GetBounds();
         float size = bounds.Max();
         Vector3[] verts = null;
@@ -24,17 +26,15 @@ public static class Geometry
         ConvertNormals(ref norms);
         ConvertUVs(ref uvs);
 
-        CreateObjects(count, verts, norms, uvs, size, root);
+        CreateObjects(count, verts, norms, uvs, size, scene, root);
 
-        var bounding = root.transform.Find("Bounding").gameObject;
-        bounding.transform.localScale = new Vector3(bounds[0], bounds[1], bounds[2]);
-        bounding.SetActive(false);
+        return size;
     }
                                                                                 
-    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject root)
+    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject scene, Transform root)
     {
-        root.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        root.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+        //scene.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        //scene.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
 
         for (int obj = 0; obj < count; ++obj)
         {
@@ -48,7 +48,7 @@ public static class Geometry
             if (parent == null)
             {
                 parent = new GameObject(name + " Parent");
-                parent.transform.parent = root.transform;
+                parent.transform.parent = scene.transform;
 
                 var material = CreateMaterial(obj, "Standard");
 
@@ -82,8 +82,9 @@ public static class Geometry
             }
         }
 
-        root.transform.localScale /= (size / 5);
-        root.transform.position += new Vector3(0, 0, 20);
+        
+        //scene.transform.localScale /= (size / 5);
+        //scene.transform.position += new Vector3(0, 0, 20);
     }
 
     static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter)
@@ -293,3 +294,4 @@ public static class Geometry
         }
     }
 }
+#endif
