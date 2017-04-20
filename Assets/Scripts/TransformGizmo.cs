@@ -3,11 +3,11 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 public class TransformGizmo : MonoBehaviour {
-    [Tooltip("The Transform to be controlled by the Gizmo")]
-    public Transform RootTransform;
+    //[Tooltip("The Transform to be controlled by the Gizmo")]
+    //public Transform RootTransform;
 
-    [Tooltip("The GameObject to be controlled by the Gizmo")]
-    public Transform SceneTransform;
+    //[Tooltip("The GameObject to be controlled by the Gizmo")]
+    //public Transform SceneTransform;
 
     [Tooltip("The GameObject to be attached to the Scale handle")]
     public GameObject ScalePrefab;
@@ -70,17 +70,11 @@ public class TransformGizmo : MonoBehaviour {
     public void OnImportCompleted(object sender, EventArgs e) {
         this.bounds = new Bounds();
 
-        ExpandBounds(this.RootTransform);
+        ExpandBounds(this.transform.parent);
 
         this.corners = LocateCorners(this.bounds);
 
         CreateTransformBox();
-
-        //this.transform.localPosition = SceneTransform.localPosition;
-        //this.transform.localRotation = SceneTransform.localRotation;
-        //this.transform.localScale = SceneTransform.localScale;
-
-        //this.targetObject.transform.parent = this.transform;
     }
 
     /// <summary>
@@ -128,7 +122,7 @@ public class TransformGizmo : MonoBehaviour {
     private void CreateTranslateGizmo(string name) {
         this.gameObject.AddComponent<BoxCollider>().size = this.bounds.size;
         this.gameObject.AddComponent<CursorTransform>().CursorType = CursorTransformEnum.Translate;
-        this.gameObject.AddComponent<HandTranslate>().HostTransform = this.RootTransform;
+        this.gameObject.AddComponent<HandTranslate>().HostTransform = this.transform.parent;
     }
 
     /// <summary>
@@ -143,7 +137,7 @@ public class TransformGizmo : MonoBehaviour {
             var position = (this.corners[0, i] + this.corners[1, i]) / 2;
             var instance = Instantiate(gizmo, position, Quaternion.identity);
             ConfigureGizmo(instance);
-            instance.AddComponent<HandRotate>().HostTransform = this.RootTransform;
+            instance.AddComponent<HandRotate>().HostTransform = this.transform.parent;
             instance.name = name;
         }
     }
@@ -160,7 +154,7 @@ public class TransformGizmo : MonoBehaviour {
             var position = this.corners[(int)face, i];
             var instance = Instantiate(gizmo, position, Quaternion.identity);
             ConfigureGizmo(instance);
-            instance.AddComponent<HandScale>().HostTransform = this.RootTransform;
+            instance.AddComponent<HandScale>().HostTransform = this.transform.parent;
             instance.name = name;
         }
     }
@@ -171,7 +165,7 @@ public class TransformGizmo : MonoBehaviour {
     /// <param name="gizmo"></param>
     /// <param name="action"></param>
     private void ConfigureGizmo(GameObject gizmo) {
-        gizmo.transform.localScale = Vector3.one * (this.bounds.size.magnitude / 100);
+        gizmo.transform.localScale = Vector3.one * (this.bounds.size.magnitude / 50);
         gizmo.transform.parent = this.transform;
         gizmo.AddComponent<MeshRenderer>().material = this.Material;
     }
@@ -226,7 +220,7 @@ public class TransformGizmo : MonoBehaviour {
     /// <returns></returns>
     private LineRenderer AddLineRenderer(GameObject line) {
         var renderer = line.AddComponent<LineRenderer>();
-        renderer.widthMultiplier = 0.0125f;
+        renderer.widthMultiplier = 0.025f;
         renderer.useWorldSpace = false;
         renderer.numPositions = 2;
         renderer.material = this.Material;
