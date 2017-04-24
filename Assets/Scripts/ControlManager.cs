@@ -1,27 +1,17 @@
-﻿using System;
-using HoloToolkit.Unity.InputModule;
+﻿using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
 
-public class ControlManager : MonoBehaviour, IInputClickHandler
-{
-    bool controlling;
+public class ControlManager : MonoBehaviour, IInputClickHandler {
 
-    void Start()
-    {
+    [Tooltip("The Gizmo Object to be controlled")]
+    public GameObject GizmoObject;
 
-    }
+    private bool controlling;
 
-    void Update()
-    {
-
-    }
-
-    public void OnInputClicked(InputEventData eventData)
-    {
+    public void OnInputClicked(InputEventData eventData) {
         controlling = !controlling;
-        var bounding = transform.Find("Bounding").gameObject;
-        bounding.SetActive(controlling);
+        this.GizmoObject.SetActive(controlling);
     }
 
 }

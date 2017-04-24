@@ -3,11 +3,8 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 public class TransformGizmo : MonoBehaviour {
-    //[Tooltip("The Transform to be controlled by the Gizmo")]
-    //public Transform RootTransform;
-
-    //[Tooltip("The GameObject to be controlled by the Gizmo")]
-    //public Transform SceneTransform;
+    [Tooltip("The GameObject to be controlled by the Gizmo")]
+    public Transform TargetTransform;
 
     [Tooltip("The GameObject to be attached to the Scale handle")]
     public GameObject ScalePrefab;
@@ -48,16 +45,16 @@ public class TransformGizmo : MonoBehaviour {
     /// </summary>
     private Bounds bounds;
 
-    /// <summary>
-    /// Holds a reference to the FileManager instance.
-    /// </summary>
-    private SceneManager fileManager;
-
     #region MonoBehaviour Members
 
     private void Start() {
-        this.fileManager = this.GetComponentInParent<SceneManager>();
-        this.fileManager.ImportCompleted += OnImportCompleted;
+        this.bounds = new Bounds();
+        ExpandBounds(this.TargetTransform);
+        this.corners = LocateCorners(this.bounds);
+        CreateTransformBox();
+
+        this.transform.parent.localScale /= (this.bounds.size.magnitude / 5);
+        this.transform.parent.position += new Vector3(0, 0, 20);
     }
 
     #endregion
@@ -69,11 +66,8 @@ public class TransformGizmo : MonoBehaviour {
     /// <param name="e"></param>
     public void OnImportCompleted(object sender, EventArgs e) {
         this.bounds = new Bounds();
-
-        ExpandBounds(this.transform.parent);
-
+        ExpandBounds(this.TargetTransform);
         this.corners = LocateCorners(this.bounds);
-
         CreateTransformBox();
     }
 

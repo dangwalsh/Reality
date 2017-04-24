@@ -5,13 +5,11 @@ using UnityEngine;
 using Reality.ObjReader;
 using System.Linq;
 
-public static class Geometry
-{
+public static class Geometry {
     const int MAXVERTS = 63000;//65536;
     static string directory = "";
 
-    public static float Initialize(string path, GameObject scene, Transform root)
-    {
+    public static void Initialize(string path, GameObject model) {
         directory = GetDirectoryName(path);
         var zipTask = Facade.UnzipFileAsync(path);
         var objPath = zipTask.Result;
@@ -26,18 +24,12 @@ public static class Geometry
         ConvertNormals(ref norms);
         ConvertUVs(ref uvs);
 
-        CreateObjects(count, verts, norms, uvs, size, scene, root);
-
-        return size;
+        CreateObjects(count, verts, norms, uvs, size, model);
     }
-                                                                                
-    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject scene, Transform root)
-    {
-        //scene.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        //scene.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
 
-        for (int obj = 0; obj < count; ++obj)
-        {
+    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject model) {
+
+        for (int obj = 0; obj < count; ++obj) {
             var vertIndex = Facade.GetVertexIndexOfObject(obj);
             var uvIndex = Facade.GetUVIndexOfObject(obj);
             var normIndex = Facade.GetNormalIndexOfObject(obj);
@@ -45,10 +37,9 @@ public static class Geometry
             var name = Facade.GetNameOfObject(obj);
             var parent = GameObject.Find(name);
 
-            if (parent == null)
-            {
+            if (parent == null) {
                 parent = new GameObject(name + " Parent");
-                parent.transform.parent = scene.transform;
+                parent.transform.parent = model.transform;
 
                 var material = CreateMaterial(obj, "Standard");
 
@@ -56,10 +47,9 @@ public static class Geometry
 
                 parent.AddComponent<MeshRenderer>();
                 parent.GetComponent<MeshRenderer>().material = material;
-            } 
+            }
 
-            for (int sector = 0; sector < divs; ++sector)
-            {
+            for (int sector = 0; sector < divs; ++sector) {
                 var child = new GameObject(name);
 
                 child.AddComponent<MeshRenderer>();
@@ -81,17 +71,12 @@ public static class Geometry
                 child.transform.parent = parent.transform;
             }
         }
-
-        
-        //scene.transform.localScale /= (size / 5);
-        //scene.transform.position += new Vector3(0, 0, 20);
     }
 
-    static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter)
-    {
+    static Vector3[] GetNorms(Vector3[] norms, int[] index, int iter) {
         var start = MAXVERTS * iter;
         var sector = index.Length - start;
-        var end = (sector < MAXVERTS) ? sector + start : MAXVERTS +  start;
+        var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
 
         var normals = new Vector3[end];
         for (int i = start; i < end; ++i)
@@ -99,8 +84,7 @@ public static class Geometry
         return normals;
     }
 
-    static Vector2[] GetUVs(Vector2[] uvs, int[] index, int iter)
-    {
+    static Vector2[] GetUVs(Vector2[] uvs, int[] index, int iter) {
         var start = MAXVERTS * iter;
         var sector = index.Length - start;
         var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
@@ -111,8 +95,7 @@ public static class Geometry
         return coords;
     }
 
-    static Vector3[] GetVerts(Vector3[] verts, int[] index, int iter)
-    {
+    static Vector3[] GetVerts(Vector3[] verts, int[] index, int iter) {
         var start = MAXVERTS * iter;
         var sector = index.Length - start;
         var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
@@ -123,14 +106,12 @@ public static class Geometry
         return vertices;
     }
 
-    static void ConvertVertices(ref Vector3[] verts)
-    {
+    static void ConvertVertices(ref Vector3[] verts) {
         var objVerts = Facade.GetVertices();
         if (objVerts == null) return;
         verts = new Vector3[objVerts.Length];
 
-        for (int i = 0; i < objVerts.Length; ++i)
-        {
+        for (int i = 0; i < objVerts.Length; ++i) {
             verts[i] = new Vector3(
                 objVerts[i][0],
                 objVerts[i][1],
@@ -139,14 +120,12 @@ public static class Geometry
         }
     }
 
-    static void ConvertNormals(ref Vector3[] norms)
-    {
+    static void ConvertNormals(ref Vector3[] norms) {
         var objNorms = Facade.GetNormals();
         if (objNorms == null) return;
         norms = new Vector3[objNorms.Length];
 
-        for (int i = 0; i < objNorms.Length; ++i)
-        {
+        for (int i = 0; i < objNorms.Length; ++i) {
             norms[i] = new Vector3(
                 objNorms[i][0],
                 objNorms[i][1],
@@ -155,14 +134,12 @@ public static class Geometry
         }
     }
 
-    static void ConvertUVs(ref Vector2[] uvs)
-    {
+    static void ConvertUVs(ref Vector2[] uvs) {
         var objUVs = Facade.GetUVs();
         if (objUVs == null) return;
         uvs = new Vector2[objUVs.Length];
 
-        for (int i = 0; i < objUVs.Length; ++i)
-        {
+        for (int i = 0; i < objUVs.Length; ++i) {
             uvs[i] = new Vector2(
                 objUVs[i][0],
                 objUVs[i][1]
@@ -170,21 +147,17 @@ public static class Geometry
         }
     }
 
-    static void CreateTextureMaps(int index, ref Material material)
-    {
+    static void CreateTextureMaps(int index, ref Material material) {
         var mapKd = Facade.GetPathOfMapOfObject("Diffuse", index);
-        if (mapKd != null && mapKd != "")
-        {
-            try
-            {
+        if (mapKd != null && mapKd != "") {
+            try {
                 var texture = CreateTexture2D(mapKd);
                 var texScale = Facade.GetScaleOfMapOfObject("Diffuse", index);
                 var scale = new Vector2(1 / texScale[0], 1 / texScale[1]);
                 material.SetTexture("_MainTex", texture);
                 material.SetTextureScale("_MainTex", scale);
             }
-            catch (FileNotFoundException)
-            {
+            catch (FileNotFoundException) {
 #if UNITY_EDITOR
                 throw;
 #endif
@@ -192,18 +165,15 @@ public static class Geometry
         }
 
         var mapBump = Facade.GetPathOfMapOfObject("Bump", index);
-        if (mapBump != null && mapBump != "")
-        {
-            try
-            {
+        if (mapBump != null && mapBump != "") {
+            try {
                 var texture = CreateTexture2D(mapBump);
                 var texScale = Facade.GetScaleOfMapOfObject("Bump", index);
                 var scale = new Vector2(1 / texScale[0], 1 / texScale[1]);
                 material.SetTexture("_BumpMap", texture);
                 material.SetTextureScale("_BumpMap", scale);
             }
-            catch (FileNotFoundException)
-            {
+            catch (FileNotFoundException) {
 #if UNITY_EDITOR
                 throw;
 #endif
@@ -211,8 +181,7 @@ public static class Geometry
         }
     }
 
-    static Material CreateMaterial(int index, string shaderType)
-    {
+    static Material CreateMaterial(int index, string shaderType) {
         var shader = Shader.Find(shaderType);
         var material = new Material(shader);
         var color = Facade.GetColorOfChannelOfObject("Diffuse", index);
@@ -226,8 +195,7 @@ public static class Geometry
         return material;
     }
 
-    static Texture2D CreateTexture2D(string path)
-    {
+    static Texture2D CreateTexture2D(string path) {
         var texture = new Texture2D(4, 4, TextureFormat.DXT5, true);
         var bytes = File.ReadAllBytes(
             directory + Path.DirectorySeparatorChar + path);
@@ -238,15 +206,12 @@ public static class Geometry
         return texture;
     }
 
-    static string GetDirectoryName(string path)
-    {
+    static string GetDirectoryName(string path) {
         return Path.GetDirectoryName(path);
     }
 
-    static void ChangeBlendMode(Material material, BlendMode blendMode)
-    {
-        switch (blendMode)
-        {
+    static void ChangeBlendMode(Material material, BlendMode blendMode) {
+        switch (blendMode) {
             case BlendMode.Opaque:
                 material.SetInt("_SrcBlend",
                    (int)UnityEngine.Rendering.BlendMode.One);
