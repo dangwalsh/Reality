@@ -4,8 +4,9 @@ using System.IO;
 using UnityEngine;
 using Reality.ObjReader;
 using System.Linq;
+using System.Collections;
 
-public static class Geometry {
+public class Geometry {
     const int MAXVERTS = 63000;//65536;
     static string directory = "";
 

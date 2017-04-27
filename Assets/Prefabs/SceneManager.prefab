@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 121b51ef9646b574786217fff60ae3b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModelPrefab: {fileID: 1371376278185332, guid: 4fbee635348e47f4f9081b9496107fba,
+  ModelManagerPrefab: {fileID: 1706838839105714, guid: 4fbee635348e47f4f9081b9496107fba,
     type: 2}

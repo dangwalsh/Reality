@@ -15,7 +15,7 @@ public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHand
     public float DistanceScale = 2.0f;
 
     [Tooltip("Should the object be oriented towards the user as it is being dragged?")]
-    public bool IsOrientTowardsUser = true;
+    public bool IsOrientTowardsUser = false;
 
     [Tooltip("Should the object be kept upright as it is being dragged?")]
     public bool IsKeepUpright = true;

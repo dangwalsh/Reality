@@ -3,7 +3,10 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 public class TransformGizmo : MonoBehaviour {
-    [Tooltip("The GameObject to be controlled by the Gizmo")]
+    [Tooltip("The Transform to be controlled by the Gizmo")]
+    public Transform RootTransform;
+
+    [Tooltip("The Transform containing the mdoel geometry")]
     public Transform TargetTransform;
 
     [Tooltip("The GameObject to be attached to the Scale handle")]
@@ -11,6 +14,9 @@ public class TransformGizmo : MonoBehaviour {
 
     [Tooltip("The GameObject to be attached to the Rotate handle")]
     public GameObject RotatePrefab;
+
+    [Tooltip("The GameObject to be attached to the Remove handle")]
+    public GameObject RemovePrefab;
 
     [Tooltip("The Material assigned to the Box")]
     public Material Material;
@@ -40,36 +46,32 @@ public class TransformGizmo : MonoBehaviour {
     /// </summary>
     private Vector3[,] corners;
 
+
+    private Bounds bounds;
     /// <summary>
     /// The bounds of the targeted object.
     /// </summary>
-    private Bounds bounds;
+    public Bounds Bounds {
+        get {
+            return this.bounds;
+        }
+    }
 
     #region MonoBehaviour Members
 
+    /// <summary>
+    /// MonoBehaviour Members
+    /// </summary>
     private void Start() {
         this.bounds = new Bounds();
         ExpandBounds(this.TargetTransform);
         this.corners = LocateCorners(this.bounds);
         CreateTransformBox();
-
-        this.transform.parent.localScale /= (this.bounds.size.magnitude / 5);
-        this.transform.parent.position += new Vector3(0, 0, 20);
+        this.RootTransform.localScale /= (this.bounds.size.magnitude / 5);
+        this.RootTransform.position += new Vector3(0, 0, 20);
     }
 
     #endregion
-
-    /// <summary>
-    /// Event handler for for ImportCompletion.
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public void OnImportCompleted(object sender, EventArgs e) {
-        this.bounds = new Bounds();
-        ExpandBounds(this.TargetTransform);
-        this.corners = LocateCorners(this.bounds);
-        CreateTransformBox();
-    }
 
     /// <summary>
     /// Recursively walk the scene root expanding the bounds of the gizmo.
@@ -97,7 +99,6 @@ public class TransformGizmo : MonoBehaviour {
         targetObject.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
     }
 
-
     /// <summary>
     /// Method to create subcomponents of TransformBox.
     /// </summary>
@@ -116,7 +117,7 @@ public class TransformGizmo : MonoBehaviour {
     private void CreateTranslateGizmo(string name) {
         this.gameObject.AddComponent<BoxCollider>().size = this.bounds.size;
         this.gameObject.AddComponent<CursorTransform>().CursorType = CursorTransformEnum.Translate;
-        this.gameObject.AddComponent<HandTranslate>().HostTransform = this.transform.parent;
+        this.gameObject.AddComponent<HandTranslate>().HostTransform = this.RootTransform;
     }
 
     /// <summary>
@@ -131,7 +132,7 @@ public class TransformGizmo : MonoBehaviour {
             var position = (this.corners[0, i] + this.corners[1, i]) / 2;
             var instance = Instantiate(gizmo, position, Quaternion.identity);
             ConfigureGizmo(instance);
-            instance.AddComponent<HandRotate>().HostTransform = this.transform.parent;
+            instance.AddComponent<HandRotate>().HostTransform = this.RootTransform;
             instance.name = name;
         }
     }
@@ -140,17 +141,30 @@ public class TransformGizmo : MonoBehaviour {
     /// Method to generate scale gizmos for the four sides of the TransformBox
     /// </summary>
     /// <param name="name"></param>
-    /// <param name="face"></param>
+    /// <param name="face"></param>g
     void CreateScaleGizmos(string name, BoxFace face) {
         var gizmo = this.ScalePrefab;
 
         for (int i = 0; i < 4; ++i) {
             var position = this.corners[(int)face, i];
-            var instance = Instantiate(gizmo, position, Quaternion.identity);
+            var instance = Instantiate(gizmo, position, Quaternion.Euler(0, 180 - i * 90, (int)face * 90 - 90));
             ConfigureGizmo(instance);
-            instance.AddComponent<HandScale>().HostTransform = this.transform.parent;
+            instance.AddComponent<HandScale>().HostTransform = this.RootTransform;
             instance.name = name;
         }
+    }
+
+    /// <summary>
+    /// Generate the Remove handle for the TransformBox
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="face"></param>
+    void CreateRemoveGizmo(string name, BoxFace face) {
+        var gizmo = this.RemovePrefab;
+        var position = (this.corners[0, 0] + this.corners[0, 1]) / 2;
+        var instance = Instantiate(gizmo, position, Quaternion.identity);
+        ConfigureGizmo(instance);
+        instance.name = name;
     }
 
     /// <summary>
@@ -159,9 +173,9 @@ public class TransformGizmo : MonoBehaviour {
     /// <param name="gizmo"></param>
     /// <param name="action"></param>
     private void ConfigureGizmo(GameObject gizmo) {
-        gizmo.transform.localScale = Vector3.one * (this.bounds.size.magnitude / 50);
+        var scaleVector = Vector3.one * (this.bounds.size.magnitude / 40);
+        gizmo.transform.localScale = scaleVector;
         gizmo.transform.parent = this.transform;
-        gizmo.AddComponent<MeshRenderer>().material = this.Material;
     }
 
     /// <summary>
@@ -214,7 +228,7 @@ public class TransformGizmo : MonoBehaviour {
     /// <returns></returns>
     private LineRenderer AddLineRenderer(GameObject line) {
         var renderer = line.AddComponent<LineRenderer>();
-        renderer.widthMultiplier = 0.025f;
+        renderer.widthMultiplier = 0.02f;
         renderer.useWorldSpace = false;
         renderer.numPositions = 2;
         renderer.material = this.Material;
