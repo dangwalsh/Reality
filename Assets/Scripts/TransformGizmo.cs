@@ -69,6 +69,7 @@ public class TransformGizmo : MonoBehaviour {
         CreateTransformBox();
         this.RootTransform.localScale /= (this.bounds.size.magnitude / 5);
         this.RootTransform.position += new Vector3(0, 0, 20);
+        this.gameObject.SetActive(false);
     }
 
     #endregion

@@ -132,7 +132,6 @@ MonoBehaviour:
   RemovePrefab: {fileID: 1106060539093782, guid: 62529e3e84a7cfd4ba58b83882741503,
     type: 2}
   Material: {fileID: 2100000, guid: cb5741e1803fb0c47b9b0b3b51ff4d1c, type: 2}
-  StatsObject: {fileID: 0}
 --- !u!114 &114948360981153986
 MonoBehaviour:
   m_ObjectHideFlags: 1
