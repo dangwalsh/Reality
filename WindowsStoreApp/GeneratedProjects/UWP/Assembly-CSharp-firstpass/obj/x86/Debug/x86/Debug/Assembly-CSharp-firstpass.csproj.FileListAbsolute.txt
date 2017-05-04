@@ -1,1 +1,0 @@
-C:\Users\22791\Unity\Reality\WindowsStoreApp\GeneratedProjects\UWP\Assembly-CSharp-firstpass\obj\x86\Debug\x86\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache

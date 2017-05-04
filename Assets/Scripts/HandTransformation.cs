@@ -36,8 +36,6 @@ public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHand
     protected Vector3 objRefForward;
     protected Quaternion draggingRotation;
 
-
-
     public void OnFocusEnter() {
         if (isGazed)
             return;

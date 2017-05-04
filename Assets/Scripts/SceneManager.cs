@@ -1,19 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour {
     [Tooltip("The Prefab that gets instantiated to hold a new model.")]
     public GameObject ModelManagerPrefab;
 
-    private string arguments = "";
+    //private string arguments = "";
 
-    /// <summary>
-    /// MonoBehaviour member
-    /// </summary>
-    private void Update() {
-        var args = UnityEngine.WSA.Application.arguments;
-        if (args == arguments || args == "") return;
-        InstantiateModelManager(ExtractPath());
+    ///// <summary>
+    ///// MonoBehaviour member
+    ///// </summary>
+    //private void Update() {
+    //    var args = UnityEngine.WSA.Application.arguments;
+    //    if (args == arguments || args == "") return;
+    //    InstantiateModelManager(ExtractPath());
+    //}
+
+    private void OnApplicationFocus(bool focus) {
+        if (focus) {
+            if (UnityEngine.WSA.Application.arguments == "") return;
+            InstantiateModelManager(ExtractPath());
+        }
     }
 
     /// <summary>
@@ -26,7 +34,7 @@ public class SceneManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// 
+    /// Call the import method of the instance.
     /// </summary>
     /// <param name="path"></param>
     /// <param name="prefab"></param>
@@ -40,7 +48,7 @@ public class SceneManager : MonoBehaviour {
     /// </summary>
     /// <returns>the path</returns>
     private String ExtractPath() {
-        arguments = UnityEngine.WSA.Application.arguments;
+        var arguments = UnityEngine.WSA.Application.arguments;
         var path = arguments.Replace("File=", "");
         return path;
     }
