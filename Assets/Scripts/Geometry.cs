@@ -4,16 +4,27 @@ using System.IO;
 using UnityEngine;
 using Reality.ObjReader;
 using System.Linq;
-using System.Collections;
 
 public class Geometry {
-    const int MAXVERTS = 63000;//65536;
+    const int MAXVERTS = 63000;
+    const int MAXATTEMPTS = 1;
     static string directory = "";
 
     public static void Initialize(string path, GameObject model) {
         directory = GetDirectoryName(path);
         var zipTask = Facade.UnzipFileAsync(path);
-        var objPath = zipTask.Result;
+
+        int attempts = 0;
+        string objPath = null;
+        try {
+            attempts++;
+            objPath = zipTask.Result;
+        }
+        catch (AggregateException) {
+            if (attempts > MAXATTEMPTS) throw;
+            objPath = zipTask.Result;
+        }
+
         int count = Facade.ImportObjects(objPath);
         float[] bounds = Facade.GetBounds();
         float size = bounds.Max();
