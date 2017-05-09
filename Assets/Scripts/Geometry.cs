@@ -66,7 +66,7 @@ public class Geometry {
                 mesh.triangles = Enumerable
                     .Range(0, mesh.vertices.Length).ToArray();
                 if (mesh.normals.Length == 0) mesh.RecalculateNormals();
-
+                
                 var t = TangentBasis.GetMeshTangets(mesh, 1.0f);
                 mesh.tangents = t;
                 child.AddComponent<MeshCollider>();
