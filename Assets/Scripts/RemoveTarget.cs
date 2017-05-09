@@ -1,24 +1,22 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System.Collections;
 
-public class RemoveTarget : MonoBehaviour, IInputClickHandler {
+public class RemoveTarget : MonoBehaviour, IHoldHandler {
 
     [Tooltip("The GameObject to be removed")]
     public GameObject TargetObject;
 
-    private int count = 0;
+    public void OnHoldCanceled(HoldEventData eventData) {
+        //throw new NotImplementedException();
+    }
 
-    public void OnInputClicked(InputEventData eventData) {
+    public void OnHoldCompleted(HoldEventData eventData) {
+        InputManager.Instance.PopModalInputHandler();
         Destroy(this.TargetObject);
     }
 
-    private IEnumerator ClickCount() {
-        WaitForSeconds wait = new WaitForSeconds(0.05f);
-        for (int i = 0; i < 2; i++) {
-            this.count++;
-            yield return wait;
-        }
-        this.count = 0;
+    public void OnHoldStarted(HoldEventData eventData) {
+        //throw new NotImplementedException();
     }
+
 }

@@ -1,36 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour {
     [Tooltip("The Prefab that gets instantiated to hold a new model.")]
     public GameObject ModelManagerPrefab;
 
-    //private string arguments = "";
+    private string args = "";
 
-    ///// <summary>
-    ///// MonoBehaviour member
-    ///// </summary>
-    //private void Update() {
-    //    var args = UnityEngine.WSA.Application.arguments;
-    //    if (args == arguments || args == "") return;
-    //    InstantiateModelManager(ExtractPath());
+    //private void Start() {
+    //    UnityEngine.WSA.Application.windowActivated += OnWindowActivated;
     //}
 
-    private void OnApplicationFocus(bool focus) {
-        if (focus) {
-            if (UnityEngine.WSA.Application.arguments == "") return;
-            InstantiateModelManager(ExtractPath());
-        }
+    //private void OnWindowActivated(WindowActivationState state) {
+    //    var arguments = UnityEngine.WSA.Application.arguments;
+    //}
+
+    //private void OnApplicationFocus(bool focus) {
+    //    if (focus)
+    //        StartCoroutine(InstantiateModelManager(ExtractPath()));          
+    //}
+
+    /// <summary>
+    /// MonoBehaviour member.
+    /// </summary>
+    private void Update() {
+        var arguments = UnityEngine.WSA.Application.arguments;
+        if (arguments == args || arguments == "") return;
+        StartCoroutine(InstantiateModelManager(ExtractPath()));
     }
 
     /// <summary>
-    /// Creates an instance of a GameObject based on a Prefab
+    /// Creates an instance of a GameObject based on a Prefab.
     /// </summary>
     /// <returns>a newly instantiated gameobject</returns>
-    private void InstantiateModelManager(String path) {
-        var prefab = Instantiate(this.ModelManagerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+    private IEnumerator InstantiateModelManager(String path) {
+        var prefab = Instantiate(this.ModelManagerPrefab, 
+                                 Vector3.zero, 
+                                 Quaternion.identity, 
+                                 this.transform);
         ImportModel(path, prefab);
+        yield return null;
     }
 
     /// <summary>
@@ -48,8 +58,8 @@ public class SceneManager : MonoBehaviour {
     /// </summary>
     /// <returns>the path</returns>
     private String ExtractPath() {
-        var arguments = UnityEngine.WSA.Application.arguments;
-        var path = arguments.Replace("File=", "");
+        args = UnityEngine.WSA.Application.arguments;
+        var path = args.Replace("File=", "");
         return path;
     }
 }

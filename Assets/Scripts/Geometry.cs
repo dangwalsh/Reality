@@ -13,18 +13,7 @@ public class Geometry {
     public static void Initialize(string path, GameObject model) {
         directory = GetDirectoryName(path);
         var zipTask = Facade.UnzipFileAsync(path);
-
-        int attempts = 0;
-        string objPath = null;
-        try {
-            attempts++;
-            objPath = zipTask.Result;
-        }
-        catch (AggregateException) {
-            if (attempts > MAXATTEMPTS) throw;
-            objPath = zipTask.Result;
-        }
-
+        var objPath = zipTask.Result;
         int count = Facade.ImportObjects(objPath);
         float[] bounds = Facade.GetBounds();
         float size = bounds.Max();
