@@ -3,24 +3,11 @@ using System.Collections;
 using UnityEngine;
 
 public class SceneManager : MonoBehaviour {
+
     [Tooltip("The Prefab that gets instantiated to hold a new model.")]
     public GameObject ModelManagerPrefab;
 
     private string args = "";
-
-    //private void Start() {
-    //    UnityEngine.WSA.Application.windowActivated += OnWindowActivated;
-    //}
-
-    //private void OnWindowActivated(WindowActivationState state) {
-    //    var arguments = UnityEngine.WSA.Application.arguments;
-    //}
-
-    //private void OnApplicationFocus(bool focus) {
-    //    if (focus)
-    //        StartCoroutine(InstantiateModelManager(ExtractPath()));          
-    //}
-
 
     /// <summary>
     /// MonoBehaviour member.
@@ -38,10 +25,7 @@ public class SceneManager : MonoBehaviour {
     /// <returns>a newly instantiated gameobject</returns>
     private GameObject InstantiateModelManager(String path) {
 
-        var instance = Instantiate(this.ModelManagerPrefab, 
-                                 Vector3.zero, 
-                                 Quaternion.identity, 
-                                 this.transform);
+        var instance = Instantiate(this.ModelManagerPrefab, Vector3.zero, Quaternion.identity, this.transform);
         ImportModel(path, instance);
         return instance;
     }
@@ -67,4 +51,19 @@ public class SceneManager : MonoBehaviour {
         var path = args.Replace("File=", "");
         return path;
     }
+
+
+
+    //private void Start() {
+    //    UnityEngine.WSA.Application.windowActivated += OnWindowActivated;
+    //}
+
+    //private void OnWindowActivated(WindowActivationState state) {
+    //    var arguments = UnityEngine.WSA.Application.arguments;
+    //}
+
+    //private void OnApplicationFocus(bool focus) {
+    //    if (focus)
+    //        StartCoroutine(InstantiateModelManager(ExtractPath()));          
+    //}
 }

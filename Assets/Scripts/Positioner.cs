@@ -2,11 +2,14 @@
 
 public class Positioner : MonoBehaviour {
 
-    public Transform Root;
-    public Transform Model;
-    public Transform Gizmo;
+    public Transform root;
+    public Transform model;
+    public Transform gizmo;
 
-    private Bounds bounds;
+    private float sizeFactor;
+    private Vector3 initialScale;
+
+    private Bounds bounds = new Bounds();
     /// <summary>
     /// The bounds of the targeted object.
     /// </summary>
@@ -16,13 +19,37 @@ public class Positioner : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Called once after instantiation.
+    /// </summary>
     private void Start() {
 
-        this.bounds = new Bounds();
-        AggregateBounds(this.Model);
-        this.Gizmo.position = this.bounds.min;
-        this.Root.localScale /= (this.bounds.size.magnitude / 5);
-        this.Root.position += new Vector3(0, 0, 10);
+        AggregateBounds(this.model);
+
+        this.initialScale = this.gizmo.localScale;
+        this.sizeFactor = this.bounds.size.magnitude / 5;
+        this.gizmo.position = this.bounds.min;
+        this.root.localScale /= this.sizeFactor;
+        this.root.position += new Vector3(0, 0, 10);
+    }
+
+    /// <summary>
+    /// Called once per frame.
+    /// </summary>
+    private void Update() {
+
+        this.gizmo.localScale = UpdateScale();
+    }
+
+    /// <summary>
+    /// Scale independent of perspetive distance and object size.
+    /// </summary>
+    /// <returns></returns>
+    private Vector3 UpdateScale() {
+
+        var perspectiveFactor = CalculatePerspectiveFactor();
+        var normalizedScale = perspectiveFactor * this.sizeFactor * this.initialScale;
+        return normalizedScale;
     }
 
     /// <summary>
@@ -40,5 +67,25 @@ public class Positioner : MonoBehaviour {
             }
             AggregateBounds(child);
         }
+    }
+
+    /// <summary>
+    /// Returns a scalar value based on the distance of the camera to the object.
+    /// </summary>
+    /// <returns></returns>
+    private float CalculatePerspectiveFactor() {
+
+        float scale = (Camera.main.transform.position - this.transform.position).magnitude;
+        return scale;
+    }
+
+    /// <summary>
+    /// Returns a scalar value based on the size of the screen.
+    /// </summary>
+    /// <returns></returns>
+    private float CalculateScreenFactor() {
+
+        float scale = Camera.main.orthographicSize * 2.0f * Screen.width / Screen.height;
+        return scale;
     }
 }

@@ -18,14 +18,15 @@ public class StatsUpdater : MonoBehaviour {
     public Text ScaY;
     public Text ScaZ;
 
-    [Tooltip("The Transform of the model being displayed")]
-    public Transform TargetTransform;
+    public static Transform TargetTransform = null;
 
     private Vector3 rotation;
     private Vector3 position;
     private Vector3 scale;
 
-
+    /// <summary>
+    /// Called once per frame.
+    /// </summary>
     private void Update() {
         var pos = UpdatePosition();
         var rot = UpdateRotation();
@@ -40,6 +41,12 @@ public class StatsUpdater : MonoBehaviour {
         UpdateText();
     }
 
+    /// <summary>
+    /// Changes the text color if it has an updated value.
+    /// </summary>
+    /// <param name="pos">position vector</param>
+    /// <param name="rot">rotation vector</param>
+    /// <param name="sca">scale vector</param>
     private void UpdateColor(Vector3 pos, Vector3 rot, Vector3 sca) {
         this.PosX.color = (pos.x == this.position.x) ? Color.white : Color.red;
         this.PosY.color = (pos.y == this.position.y) ? Color.white : Color.red;
@@ -54,6 +61,9 @@ public class StatsUpdater : MonoBehaviour {
         this.ScaZ.color = (sca.z == this.scale.z)    ? Color.white : Color.red;
     }
 
+    /// <summary>
+    /// Sets the text to the latest value.
+    /// </summary>
     private void UpdateText() {
         this.PosX.text = String.Format("{0:F3}", this.position.x);
         this.PosY.text = String.Format("{0:F3}", this.position.y);
@@ -68,16 +78,28 @@ public class StatsUpdater : MonoBehaviour {
         this.ScaZ.text = String.Format("{0:F3}", this.scale.z);
     }
     
+    /// <summary>
+    /// Gets the scale value.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 UpdateScale() {
         if (TargetTransform == null) return Vector3.one;
         return TargetTransform.lossyScale;
     }
 
+    /// <summary>
+    /// Gets the rotation value.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 UpdateRotation() {
         if (TargetTransform == null) return Vector3.zero;
         return TargetTransform.rotation.eulerAngles;
     }
 
+    /// <summary>
+    /// Gets the position value.
+    /// </summary>
+    /// <returns></returns>
     private Vector3 UpdatePosition() {
         if (TargetTransform == null) return Vector3.zero;
         return TargetTransform.position;

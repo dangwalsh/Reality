@@ -329,15 +329,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a119f8e0720ce8f4c9dab151090f9a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PosX: {fileID: 0}
-  PosY: {fileID: 0}
-  PosZ: {fileID: 0}
-  RotX: {fileID: 0}
-  RotY: {fileID: 0}
-  RotZ: {fileID: 0}
-  ScaX: {fileID: 0}
-  ScaY: {fileID: 0}
-  ScaZ: {fileID: 0}
+  PosX: {fileID: 114354651200747498}
+  PosY: {fileID: 114504336056195204}
+  PosZ: {fileID: 114193259947555242}
+  RotX: {fileID: 114272437580869028}
+  RotY: {fileID: 114825549667105442}
+  RotZ: {fileID: 114703264694973660}
+  ScaX: {fileID: 114792800322409572}
+  ScaY: {fileID: 114343640799440112}
+  ScaZ: {fileID: 114512942982072614}
   TargetTransform: {fileID: 0}
 --- !u!114 &114186780438476682
 MonoBehaviour:

@@ -15,19 +15,29 @@ public class Interactible : MonoBehaviour, IFocusable
     private Material[] defaultMaterials;
     private Color[] defaultColors;
 
-
+    /// <summary>
+    /// Called when user gazes at this object.
+    /// </summary>
     public void OnFocusEnter()
     {
-        for (int i = 0; i < defaultMaterials.Length; i++)
-            defaultMaterials[i].SetColor(this.PropertyName, this.InteractColor); 
+        if (defaultMaterials != null)
+            for (int i = 0; i < defaultMaterials.Length; i++)
+                defaultMaterials[i].SetColor(this.PropertyName, this.InteractColor); 
     }
 
+    /// <summary>
+    /// Called when user gaze leaves object.
+    /// </summary>
     public void OnFocusExit()
     {
-        for (int i = 0; i < defaultMaterials.Length; i++)
-            defaultMaterials[i].SetColor(this.PropertyName, this.defaultColors[i]); 
+        if (defaultMaterials != null)
+            for (int i = 0; i < defaultMaterials.Length; i++)
+                defaultMaterials[i].SetColor(this.PropertyName, this.defaultColors[i]); 
     }
 
+    /// <summary>
+    /// Called once at instantiation.
+    /// </summary>
     private void Start()
     {
         var rend = GetComponent<Renderer>();
@@ -47,6 +57,9 @@ public class Interactible : MonoBehaviour, IFocusable
         }
     }
 
+    /// <summary>
+    /// Set the original colors in an array for switching back.
+    /// </summary>
     private void SetColors()
     {
         int length = defaultMaterials.Length;

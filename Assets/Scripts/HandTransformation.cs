@@ -71,6 +71,8 @@ public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHand
         InputManager.Instance.PushModalInputHandler(gameObject);
         isTransforming = true;
 
+        StatsUpdater.TargetTransform = this.transform;
+
         Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
 
         Vector3 handPosition;
@@ -140,6 +142,7 @@ public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHand
             return;
 
         InputManager.Instance.PopModalInputHandler();
+        StatsUpdater.TargetTransform = null;
         isTransforming = false;
         currentInputSource = null;
         StoppedTransformation.RaiseEvent();
