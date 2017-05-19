@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-public class Positioner : MonoBehaviour {
+public class PositionTarget : MonoBehaviour {
 
     public Transform root;
     public Transform model;
-    public Transform gizmo;
+    public Transform target;
 
     private float sizeFactor;
     private Vector3 initialScale;
@@ -26,9 +26,9 @@ public class Positioner : MonoBehaviour {
 
         AggregateBounds(this.model);
 
-        this.initialScale = this.gizmo.localScale;
+        this.initialScale = this.target.localScale;
         this.sizeFactor = this.bounds.size.magnitude / 5;
-        this.gizmo.position = this.bounds.min;
+        this.target.position = this.bounds.min;
         this.root.localScale /= this.sizeFactor;
         this.root.position += new Vector3(0, 0, 10);
     }
@@ -38,7 +38,7 @@ public class Positioner : MonoBehaviour {
     /// </summary>
     private void Update() {
 
-        this.gizmo.localScale = UpdateScale();
+        this.target.localScale = UpdateScale();
     }
 
     /// <summary>

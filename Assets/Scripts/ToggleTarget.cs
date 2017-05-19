@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
-public class ToggleGizmo : MonoBehaviour, IInputHandler {
+public class ToggleTarget : MonoBehaviour, IInputHandler {
 
     [Tooltip("The Gizmo object to be toggled.")]
     public GameObject targetObject;
