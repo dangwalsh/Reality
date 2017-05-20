@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 
-public class HandleRemove : MonoBehaviour {
+public class HandleRemove : MonoBehaviour, IInputClickHandler {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [Tooltip("The GameObject to be removed")]
+    public GameObject targetObject;
+
+    /// <summary>
+    /// Destroy the target when clicked.
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnInputClicked(InputEventData eventData) {
+
+        Destroy(this.targetObject);
+    }
 }
