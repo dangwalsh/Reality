@@ -13,6 +13,7 @@ public class HandleRemove : MonoBehaviour, IInputHandler {
     public void OnInputDown(InputEventData eventData) {
 
         Destroy(this.targetObject);
+        eventData.Reset();
     }
 
     /// <summary>

@@ -1,16 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UpdateScene : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    [Tooltip("The Prefab that gets instantiated to hold a new model.")]
+    public GameObject modelPrefab;
+
+    private string args = "";
+
+    /// <summary>
+    /// Called once per frame.
+    /// </summary>
+    private void Update() {
+
+        var arguments = UnityEngine.WSA.Application.arguments;
+        if (arguments == args || arguments == "") return;
+        Instantiate(this.modelPrefab, Vector3.zero, Quaternion.identity, this.transform);
+        this.args = arguments;
+    }
 }

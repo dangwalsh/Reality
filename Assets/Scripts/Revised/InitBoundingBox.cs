@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 
-public class InitBox : MonoBehaviour {
+public class InitBoundingBox : MonoBehaviour {
 
     [Tooltip("The width of the lines")]
     public float widthMultipler = 0.02f;
 
     [Tooltip("The box material")]
     public Material material;
+
+    [Tooltip("Parent object containing the geometry to be bounded.")]
+    public GameObject targetObject;
 
     /// <summary>
     /// Keeps track of which face we are addressing.
@@ -19,7 +22,7 @@ public class InitBox : MonoBehaviour {
 
     private void Start() {
 
-        var initBounds = this.gameObject.GetComponent<InitBounds>();
+        var initBounds = this.targetObject.GetComponent<InitBounds>();
         var corners = initBounds.Corners;
             
         CreateFrame("Edge", corners);
