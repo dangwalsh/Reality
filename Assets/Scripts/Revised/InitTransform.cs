@@ -14,6 +14,6 @@ public class InitTransform : MonoBehaviour {
         var sizeFactor = bounds.extents.magnitude * this.sizeAdjustment;
 
         this.transform.localScale /= sizeFactor;
-        this.transform.position += new Vector3(0, 0, 10);
+        this.transform.position += new Vector3(0, 0, 20);
     }
 }

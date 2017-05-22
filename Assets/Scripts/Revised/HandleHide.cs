@@ -12,7 +12,7 @@ public class HandleHide : MonoBehaviour, IInputHandler {
     /// <param name="eventData"></param>
     public void OnInputDown(InputEventData eventData) {
 
-        this.targetObject.SetActive(!this.targetObject.activeSelf);
+        // do nothing
     }
 
     /// <summary>
@@ -21,6 +21,6 @@ public class HandleHide : MonoBehaviour, IInputHandler {
     /// <param name="eventData"></param>
     public void OnInputUp(InputEventData eventData) {
 
-        // do nothing
+        this.targetObject.SetActive(!this.targetObject.activeSelf);
     }
 }

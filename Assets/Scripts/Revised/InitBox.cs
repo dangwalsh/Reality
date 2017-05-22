@@ -3,7 +3,7 @@
 public class InitBox : MonoBehaviour {
 
     [Tooltip("The width of the lines")]
-    public float lineWidth;
+    public float widthMultipler = 0.02f;
 
     [Tooltip("The box material")]
     public Material material;
@@ -17,12 +17,11 @@ public class InitBox : MonoBehaviour {
         Side
     }
 
-    private void OnEnable() {
+    private void Start() {
 
-        var model = this.transform.parent.gameObject;
-        var initBounds = model.GetComponent<InitBounds>();
+        var initBounds = this.gameObject.GetComponent<InitBounds>();
         var corners = initBounds.Corners;
-
+            
         CreateFrame("Edge", corners);
     }
 
@@ -80,7 +79,7 @@ public class InitBox : MonoBehaviour {
     private LineRenderer AddLineRenderer(GameObject line) {
 
         var renderer = line.AddComponent<LineRenderer>();
-        renderer.widthMultiplier = 0.02f;
+        renderer.widthMultiplier = this.widthMultipler;
         renderer.useWorldSpace = false;
         renderer.numPositions = 2;
         renderer.material = this.material;
