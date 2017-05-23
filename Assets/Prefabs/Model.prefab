@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33001374211749774}
   - component: {fileID: 23911374926907656}
   m_Layer: 0
-  m_Name: x
+  m_Name: X
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 33234878748920888}
   - component: {fileID: 23795402043734472}
   m_Layer: 0
-  m_Name: z
+  m_Name: Z
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 114153547833664012}
   - component: {fileID: 114490020271984014}
   m_Layer: 0
-  m_Name: scale-menu
+  m_Name: Scale-Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 114530464565823560}
   - component: {fileID: 114023864241436152}
   m_Layer: 0
-  m_Name: remove
+  m_Name: Remove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 114428218799186564}
   - component: {fileID: 114662278052154574}
   m_Layer: 0
-  m_Name: rotate
+  m_Name: Rotate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 114795309581039576}
   - component: {fileID: 114191830727889104}
   m_Layer: 0
-  m_Name: scale-drag
+  m_Name: Scale-Drag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 114949363512683170}
   - component: {fileID: 114110975513557670}
   m_Layer: 0
-  m_Name: translate
+  m_Name: Translate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 33744120483352368}
   - component: {fileID: 23279335597370758}
   m_Layer: 0
-  m_Name: y
+  m_Name: Y
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -422,7 +422,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b48229d5b06b2924db5f35a0b932f1fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -547,7 +547,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b48229d5b06b2924db5f35a0b932f1fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -609,7 +609,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: b48229d5b06b2924db5f35a0b932f1fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1181,7 +1181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854407dc46ad1574bb59106eb8f32284, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CursorType: 0
+  CursorType: 5
 --- !u!114 &114191830727889104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1336,6 +1336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetObject: {fileID: 1726136982594214}
+  location: 0
 --- !u!114 &114716962001123940
 MonoBehaviour:
   m_ObjectHideFlags: 1

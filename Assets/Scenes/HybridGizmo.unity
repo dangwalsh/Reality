@@ -91,6 +91,11 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &182249248 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1204318889791290, guid: 316f3023539040e40b2a550a77912cfa,
+    type: 2}
+  m_PrefabInternal: {fileID: 1878836619}
 --- !u!1001 &459435578
 Prefab:
   m_ObjectHideFlags: 0
@@ -261,6 +266,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelPrefab: {fileID: 1726136982594214, guid: 23f308152c38c094d8c8a96108e25505,
     type: 2}
+--- !u!1 &1111742633 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1442224137719566, guid: 316f3023539040e40b2a550a77912cfa,
+    type: 2}
+  m_PrefabInternal: {fileID: 1878836619}
 --- !u!1 &1761286164
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,6 +474,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.size
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4173018521855516, guid: 316f3023539040e40b2a550a77912cfa, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -496,6 +511,36 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[4].Name
+      value: Fit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[4].CursorType
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[4].CursorSecondary
+      value: 
+      objectReference: {fileID: 1111742633}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[5].Name
+      value: OneToOne
+      objectReference: {fileID: 0}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[5].CursorType
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114971048701596686, guid: 316f3023539040e40b2a550a77912cfa,
+        type: 2}
+      propertyPath: CursorActionData.Array.data[5].CursorSecondary
+      value: 
+      objectReference: {fileID: 182249248}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 316f3023539040e40b2a550a77912cfa, type: 2}
   m_IsPrefabParent: 0

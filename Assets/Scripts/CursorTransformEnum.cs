@@ -3,5 +3,7 @@
     None,
     Translate,
     Scale,
-    Rotate
+    Rotate,
+    Fit,
+    OneToOne
 }

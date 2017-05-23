@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
-public class UpdateTransformScale : MonoBehaviour {
+public class UpdateScale : MonoBehaviour {
 
     [Tooltip("Tweak the base scale of the target object.")]
     public float ScaleAdjust = 0.2f;
 
+    /// <summary>
+    /// Called once per frame.
+    /// </summary>
     private void Update () {
 
         var newScale = transform.parent.parent.localScale;
