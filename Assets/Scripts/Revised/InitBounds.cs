@@ -29,7 +29,7 @@ public class InitBounds : MonoBehaviour {
     /// <summary>
     /// Called once at instantiation.
     /// </summary>
-    private void Start() {
+    private void Awake() {
  
         AggregateBounds(this.transform);
         LocateCorners(this.bounds);

@@ -198,7 +198,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4881792350393836}
-  - component: {fileID: 114932139619200724}
+  - component: {fileID: 114700303553593898}
+  - component: {fileID: 114891462558415458}
   m_Layer: 0
   m_Name: Gizmo
   m_TagString: Untagged
@@ -336,7 +337,7 @@ Transform:
   m_GameObject: {fileID: 1896008300633610}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4653845413450634}
   - {fileID: 4656920393877284}
@@ -1323,6 +1324,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PropertyName: _Color
   InteractColor: {r: 0.60294116, g: 0.33681542, b: 0, a: 0}
+--- !u!114 &114700303553593898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1896008300633610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c779e9b84305e4c4f8b4b37a393212e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 1726136982594214}
 --- !u!114 &114716962001123940
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1373,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CursorType: 2
---- !u!114 &114932139619200724
+--- !u!114 &114891462558415458
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1381,11 +1394,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1896008300633610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ea75509425dee14ca8984f757d36e0c, type: 3}
+  m_Script: {fileID: 11500000, guid: 99e2c888645afd445b9d1135262845c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeAdjustment: 0.2
-  targetObject: {fileID: 1726136982594214}
+  ScaleAdjust: 0.2
 --- !u!114 &114949363512683170
 MonoBehaviour:
   m_ObjectHideFlags: 1
