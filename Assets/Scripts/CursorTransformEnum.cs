@@ -5,5 +5,6 @@
     Scale,
     Rotate,
     Fit,
-    OneToOne
+    OneToOne,
+    Remove
 }

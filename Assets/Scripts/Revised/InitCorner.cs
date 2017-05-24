@@ -2,7 +2,7 @@
 
 public class InitCorner : MonoBehaviour {
 
-    public enum Location { Min, Center, Max}
+    public enum Location { Min, Center, Max }
 
     [Tooltip("The object whose corner we want to find.")]
     public GameObject targetObject;
@@ -13,12 +13,21 @@ public class InitCorner : MonoBehaviour {
     /// <summary>
     /// Called once at instantiation.
     /// </summary>
-	void Start () {
+	private void Start () {
 
         var initBounds = this.targetObject.GetComponent<InitBounds>();
         var bounds = initBounds.Bounds;
 
-        switch(this.location) {
+        SetLocation(bounds);
+    }
+
+    /// <summary>
+    /// Sets the location relative to the bounding box.
+    /// </summary>
+    /// <param name="bounds"></param>
+    private void SetLocation(Bounds bounds) {
+
+        switch (this.location) {
 
             case Location.Min:
                 this.transform.position = bounds.min;
@@ -31,7 +40,7 @@ public class InitCorner : MonoBehaviour {
                 break;
             default:
                 throw new System.Exception("There is no corresponding location.");
-        } 
+        }
     }
 }
 

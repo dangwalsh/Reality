@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using HoloToolkit.Unity.InputModule;
-using System;
 
 public class HandlePresetScale : MonoBehaviour, IInputHandler {
 
@@ -9,8 +8,7 @@ public class HandlePresetScale : MonoBehaviour, IInputHandler {
 
     public void OnInputDown(InputEventData eventData) {
 
-        var scale = ChooseScale(this.targetTransform);
-        this.targetTransform.localScale = scale;
+        SetScale(this.targetTransform);
         eventData.Reset();
     }
 
@@ -24,19 +22,23 @@ public class HandlePresetScale : MonoBehaviour, IInputHandler {
     /// </summary>
     /// <param name="target"></param>
     /// <returns></returns>
-    private Vector3 ChooseScale(Transform target) {
+    private void SetScale(Transform target) {
+
+        var initTransform = target.gameObject.GetComponent<InitTransform>();
+        if (initTransform == null) return;
 
         UpdateCursor(CursorTransformEnum.Fit);
+
         Vector3 scale = Vector3.one;
         if (target.localScale == scale) {
 
-            var initTransform = target.gameObject.GetComponent<InitTransform>();
             if (initTransform != null) {
                 scale = initTransform.ScaleToFit;
                 UpdateCursor(CursorTransformEnum.OneToOne);
             }
         }
-        return scale;
+
+        target.localScale = scale;
     }
 
     /// <summary>

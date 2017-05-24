@@ -1,17 +1,17 @@
 fileFormatVersion: 2
-guid: cb8ce5ce404c58649bee562c01b49993
-timeCreated: 1495636155
+guid: 9c3ced41159b48b4882d2f30ef1ca9c8
+timeCreated: 1495651586
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: fit
+    100000: remove
     100002: //RootNode
-    400000: fit
+    400000: remove
     400002: //RootNode
-    2300000: fit
-    3300000: fit
-    4300000: fit
+    2300000: remove
+    3300000: remove
+    4300000: remove
   materials:
     importMaterials: 1
     materialName: 0
