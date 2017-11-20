@@ -338,7 +338,6 @@ MonoBehaviour:
   ScaX: {fileID: 114792800322409572}
   ScaY: {fileID: 114343640799440112}
   ScaZ: {fileID: 114512942982072614}
-  TargetTransform: {fileID: 0}
 --- !u!114 &114186780438476682
 MonoBehaviour:
   m_ObjectHideFlags: 1
