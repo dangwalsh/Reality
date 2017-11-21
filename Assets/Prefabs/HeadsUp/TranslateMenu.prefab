@@ -51,8 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a64a91547b6a5a44a342eef2b66f6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuController: {fileID: 114242537714425534, guid: 3eb6b3235d4a1e1458e8454f7a47c70c,
-    type: 2}
-  gazeController: {fileID: 114625121574882904, guid: fddfb40ac1b3e0a41aa322a21e6b1495,
-    type: 2}
+  menuController: {fileID: 0}
+  gazeController: {fileID: 0}
   mainMenu: {fileID: 4725935876034808, guid: 70001455e0d92ab4ca74db39432bc64a, type: 2}

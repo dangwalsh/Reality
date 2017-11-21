@@ -26,12 +26,8 @@
             var location = ControlKnob.transform.localPosition;
             var offset = location.x;
 
-            //offset = (offset > 1.0f) ? 1.0f : offset;
-            //offset = (offset < 0.0f) ? 0.0f : offset;
-
             ControlKnob.transform.localPosition = new Vector3(offset, 0, 0);
 
-            //negativeLine.SetPosition(1, new Vector3(offset/* + .07f*/, 0, 0));
             positiveLine.SetPosition(1, new Vector3(offset/* - .07f*/, 0, 0));
             iconRenderer.material.color = new Color(color.r, color.g, color.b, Distribute(offset));
         }

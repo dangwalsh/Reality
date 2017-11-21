@@ -26,6 +26,11 @@ public class SceneManager : MonoBehaviour {
     private GameObject InstantiateModelManager(String path) {
 
         var instance = Instantiate(this.ModelManagerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+
+        var menuDelegate = instance.GetComponent<HeadsUp.MenuDelegate>();
+        var menusManagerObject = GameObject.Find("MenusManager");
+        menuDelegate.MenusManagerObject = menusManagerObject;
+
         ImportModel(path, instance);
         return instance;
     }
@@ -37,6 +42,7 @@ public class SceneManager : MonoBehaviour {
     /// <param name="instance"></param>
     private static void ImportModel(String path, GameObject instance) {
 
+        //var importer = instance.GetComponentInChildren<ModelImport>();
         var importer = instance.GetComponent<ModelImport>();
         importer.ImportModel(path);
     }

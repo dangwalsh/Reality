@@ -2,7 +2,7 @@
 
     using UnityEngine;
 
-    public class MenuController : MonoBehaviour {
+    public class MenusManager: MonoBehaviour {
 
         public GameObject MainMenu;
         public GameObject RotateMenu;

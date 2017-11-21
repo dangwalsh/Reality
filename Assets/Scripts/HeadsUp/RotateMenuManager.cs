@@ -10,7 +10,7 @@
         public GameObject rightControl;
         public TextMesh textField;
 
-        public MenuController menuController;
+        public MenusManager menuController;
         public HandRotate handController;
         public Camera sceneCamera;
         public Transform mainMenu;

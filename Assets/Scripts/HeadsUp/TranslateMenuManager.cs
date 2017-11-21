@@ -4,7 +4,7 @@
 
     public class TranslateMenuManager : MonoBehaviour {
 
-        public MenuController menuController;
+        public MenusManager menuController;
         public GazeTransformation gazeController;
         public Transform mainMenu;
 

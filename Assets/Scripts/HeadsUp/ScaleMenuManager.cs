@@ -8,7 +8,7 @@
         public GameObject rightControl;
         public TextMesh textField;
 
-        public MenuController menuController;
+        public MenusManager menuController;
         public HandScale handController;
         public Camera sceneCamera;
         public Transform mainMenu;

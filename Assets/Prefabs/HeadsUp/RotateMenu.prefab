@@ -725,10 +725,8 @@ MonoBehaviour:
   leftControl: {fileID: 1533341409149860}
   rightControl: {fileID: 1899269444159806}
   textField: {fileID: 102288065331514476}
-  menuController: {fileID: 114242537714425534, guid: 3eb6b3235d4a1e1458e8454f7a47c70c,
-    type: 2}
-  handController: {fileID: 114544283688855928, guid: fddfb40ac1b3e0a41aa322a21e6b1495,
-    type: 2}
+  menuController: {fileID: 0}
+  handController: {fileID: 0}
   sceneCamera: {fileID: 20000013304850028, guid: d379ed0a5618c9f479f58bd83a2d0ad3,
     type: 2}
   mainMenu: {fileID: 4725935876034808, guid: 70001455e0d92ab4ca74db39432bc64a, type: 2}
