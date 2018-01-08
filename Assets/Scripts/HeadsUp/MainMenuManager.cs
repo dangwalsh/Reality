@@ -29,6 +29,11 @@
             PlayOnDisable.Play();
         }
 
+        public void ShowMenu() {
+
+            gameObject.SetActive(true);
+        }
+
         public void DismissMenu() {
 
             if (!gameObject.activeSelf) return;

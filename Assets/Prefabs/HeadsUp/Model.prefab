@@ -72,6 +72,7 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
+  QuantizeAmount: 0.01
 --- !u!114 &114509726322869662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823b958753e8a2d4b86b1c82316db4f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scaleFactor: 10
 --- !u!114 &114544283688855928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,6 +100,7 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
+  QuantizeAmount: 0.01
 --- !u!114 &114625121574882904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -124,4 +127,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e73199c75b3d5244b6f2fe3a653453e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuSystem: {fileID: 1808145389881804, guid: 70001455e0d92ab4ca74db39432bc64a, type: 2}

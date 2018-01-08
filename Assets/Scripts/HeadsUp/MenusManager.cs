@@ -8,6 +8,7 @@
         public GameObject RotateMenu;
         public GameObject ScaleMenu;
         public GameObject TranslateMenu;
+        public GameObject ThisModel;
 
 
         public void ReturnHome(GameObject pSender) {
@@ -30,6 +31,11 @@
         public void ShowPositionMenu() {
 
             this.TranslateMenu.SetActive(true);
+        }
+
+        public void RemoveThisModel() {
+
+            Destroy(ThisModel);
         }
 
         private void Update() {

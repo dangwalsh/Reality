@@ -21,7 +21,9 @@
         [Tooltip("Should the object be kept upright as it is being dragged?")]
         public bool IsKeepUpright = true;
 
-        public float TransformValue { get; protected set; }
+        public float QuantizeValue { get; set; }
+
+        public float TransformValue { get; set; }
 
         private float handValue;
         public float HandValue {

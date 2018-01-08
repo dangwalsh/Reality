@@ -19,21 +19,26 @@
 
 
         private void OnEnable() {
+            if (handController == null) return;
 
+            handController.StartedTransformation += OnTransformationStarted;
+            handController.StoppedTransformation += OnTransformationStopped;
             handController.enabled = true;
+
             gameObject.transform.position = mainMenu.position;
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
         private void OnDisable() {
             if (handController == null) return;
+
+            handController.StartedTransformation -= OnTransformationStarted;
+            handController.StoppedTransformation -= OnTransformationStopped;
             handController.enabled = false;
         }
 
         private void Start() {
 
-            handController.StartedTransformation += OnTransformationStarted;
-            handController.StoppedTransformation += OnTransformationStopped;
             ResetControls();
         }
 
@@ -58,12 +63,6 @@
             }
 
             textField.text = handController.TransformValue.ToString("n0");
-        }
-
-        private void OnDestroy() {
-
-            handController.StartedTransformation -= OnTransformationStarted;
-            handController.StoppedTransformation -= OnTransformationStopped;
         }
 
         private void OnTransformationStarted() {

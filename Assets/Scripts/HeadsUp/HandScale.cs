@@ -14,14 +14,21 @@
 
             this.HandValue = delta.x + delta.y + delta.z;
             var currentScale = HostTransform.localScale;
+            var rawScale = this.HandValue * currentScale;
+            //var quantizedScale = new Vector3(
+            //    Mathf.Round(rawScale.x / QuantizeValue) * QuantizeValue, 
+            //    Mathf.Round(rawScale.y / QuantizeValue) * QuantizeValue, 
+            //    Mathf.Round(rawScale.z / QuantizeValue) * QuantizeValue);
 
             if (isPerpetual) {
-
-                HostTransform.localScale += this.HandValue * currentScale * Time.deltaTime;
+                HostTransform.localScale += rawScale * Time.deltaTime;
+                // HostTransform.localScale += quantizedScale * Time.deltaTime;
+                // HostTransform.localScale += this.HandValue * currentScale * Time.deltaTime;
             }
             else {
-
-                HostTransform.localScale += this.HandValue * currentScale;
+                HostTransform.localScale += rawScale;
+                // HostTransform.localScale += quantizedScale;
+                // HostTransform.localScale += this.HandValue * currentScale;
                 draggingPosition = newDraggingPosition;
             }
 

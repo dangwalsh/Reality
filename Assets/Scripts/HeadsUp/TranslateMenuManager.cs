@@ -11,24 +11,22 @@
         bool isTransforming;
 
         private void OnEnable() {
+            if (gazeController == null) return;
+
+            gazeController.StartedTransformation += OnTransformationStarted;
+            gazeController.StoppedTransformation += OnTransformationStopped;
             gazeController.enabled = true;
+
             gameObject.transform.position = mainMenu.position;
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
         private void OnDisable() {
             if (gazeController == null) return;
-            gazeController.enabled = false;
-        }
 
-        private void OnDestroy() {
             gazeController.StartedTransformation -= OnTransformationStarted;
             gazeController.StoppedTransformation -= OnTransformationStopped;
-        }
-
-        private void Start() {
-            gazeController.StartedTransformation += OnTransformationStarted;
-            gazeController.StoppedTransformation += OnTransformationStopped;
+            gazeController.enabled = false;
         }
 
         private void OnTransformationStarted() {

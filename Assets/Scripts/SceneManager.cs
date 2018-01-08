@@ -29,7 +29,8 @@ public class SceneManager : MonoBehaviour {
 
         var menuDelegate = instance.GetComponent<HeadsUp.MenuDelegate>();
         var menusManagerObject = GameObject.Find("MenusManager");
-        menuDelegate.MenusManagerObject = menusManagerObject;
+        var menusManager = menusManagerObject.GetComponent<HeadsUp.MenusManager>();
+        menuDelegate.MenusManager = menusManager;
 
         ImportModel(path, instance);
         return instance;
@@ -42,7 +43,6 @@ public class SceneManager : MonoBehaviour {
     /// <param name="instance"></param>
     private static void ImportModel(String path, GameObject instance) {
 
-        //var importer = instance.GetComponentInChildren<ModelImport>();
         var importer = instance.GetComponent<ModelImport>();
         importer.ImportModel(path);
     }

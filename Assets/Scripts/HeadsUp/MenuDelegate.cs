@@ -5,12 +5,10 @@
 
     public class MenuDelegate : MonoBehaviour, IInputClickHandler {
 
-        public GameObject MenusManagerObject {
-            get { return menusManagerObject; }
+        public MenusManager MenusManager{
+            get { return menusManager; }
             set {
-                menusManagerObject = value;
-                menusManager = menusManagerObject.GetComponent<MenusManager>();
-                mainMenuObject = menusManager.MainMenu;
+                menusManager = value;
                 mainMenuManager = menusManager.MainMenu.GetComponent<MainMenuManager>();
                 rotateMenuManager = menusManager.RotateMenu.GetComponent<RotateMenuManager>();
                 scaleMenuManager = menusManager.ScaleMenu.GetComponent<ScaleMenuManager>();
@@ -23,18 +21,16 @@
         RotateMenuManager rotateMenuManager;
         ScaleMenuManager scaleMenuManager;
         TranslateMenuManager translateMenuManager;
-        GameObject menusManagerObject;
-        GameObject mainMenuObject;
 
         public void OnInputClicked(InputEventData eventData) {
 
-            if (!mainMenuObject.activeSelf) {
-     
+            if (!menusManager.MainMenu.activeSelf) {
+
+                menusManager.ThisModel = gameObject;
                 rotateMenuManager.handController = GetComponent<HandRotate>();
                 scaleMenuManager.handController = GetComponent<HandScale>();
                 translateMenuManager.gazeController = GetComponent<GazeTranslate>();
-
-                mainMenuObject.SetActive(!mainMenuObject.activeSelf);
+                mainMenuManager.ShowMenu();
             }
             else {
 

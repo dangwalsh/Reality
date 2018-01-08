@@ -2,7 +2,7 @@
 
     using UnityEngine;
 
-    public class PositionModel : MonoBehaviour {
+    public class ModelManager : MonoBehaviour {
 
         public float scaleFactor = 10;
 

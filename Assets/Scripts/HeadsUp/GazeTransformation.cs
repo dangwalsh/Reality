@@ -21,7 +21,7 @@
         [Tooltip("Should the object be kept upright as it is being dragged?")]
         public bool IsKeepUpright = true;
 
-        protected bool isTransforming;
+        public static bool isTransforming;
         protected float objDistance;
 
         void StartTransform() {
