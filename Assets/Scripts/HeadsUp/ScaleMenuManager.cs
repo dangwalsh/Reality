@@ -59,7 +59,7 @@
                 ResetControls();
             }
 
-            textField.text = handController.TransformValue.ToString("n2");
+            textField.text = handController.TransformValue.ToString("n3");
         }
 
 

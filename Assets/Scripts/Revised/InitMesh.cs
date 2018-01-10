@@ -27,19 +27,22 @@ public class InitMesh : MonoBehaviour {
         var path = GetPath();
         var directory = Path.GetDirectoryName(path);
         var zipTask = Facade.UnzipFileAsync(path);
-        var objPath = zipTask.Result;
-        int count = Facade.ImportObjects(objPath);
-        float[] bounds = Facade.GetBounds();
-        float size = bounds.Max();
-        Vector3[] verts = null;
-        Vector3[] norms = null;
-        Vector2[] uvs = null;
+        var objPaths = zipTask.Result;
 
-        ConvertVertices(ref verts);
-        ConvertNormals(ref norms);
-        ConvertUVs(ref uvs);
+        foreach(string objPath in objPaths) {
+            int count = Facade.ImportObjects(objPath);
+            float[] bounds = Facade.GetBounds();
+            float size = bounds.Max();
+            Vector3[] verts = null;
+            Vector3[] norms = null;
+            Vector2[] uvs = null;
 
-        CreateObjects(count, verts, norms, uvs, size, this.gameObject, directory);
+            ConvertVertices(ref verts);
+            ConvertNormals(ref norms);
+            ConvertUVs(ref uvs);
+
+            CreateObjects(count, verts, norms, uvs, size, this.gameObject, directory);
+        }
     }
 
     static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject model, string directory) {

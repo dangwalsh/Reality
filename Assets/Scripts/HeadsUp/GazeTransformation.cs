@@ -27,7 +27,7 @@
         void StartTransform() {
             InputManager.Instance.PushModalInputHandler(HostTransform.gameObject);
             isTransforming = true;
-            objDistance = HostTransform.localPosition.z;
+            objDistance = Camera.main.transform.InverseTransformDirection(HostTransform.localPosition).z;
             StartedTransformation.RaiseEvent();
         }
 
