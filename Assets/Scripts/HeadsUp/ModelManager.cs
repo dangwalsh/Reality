@@ -1,31 +1,41 @@
 ﻿namespace HeadsUp {
 
+    using System;
+    using System.Collections.Generic;
     using UnityEngine;
 
     public class ModelManager : MonoBehaviour {
 
         public float scaleFactor = 10;
 
-        Bounds bounds;
+        Bounds aggregateBounds;
 
         void Start() {
 
-            ExpandBounds(transform.parent);
+            AggregateMeshes();
+            CenterOnPivot();
 
-            transform.localScale /= bounds.size.magnitude / scaleFactor;
+            transform.localScale /= aggregateBounds.size.magnitude / scaleFactor;
             transform.localPosition += new Vector3(0, 0, 10);
         }
 
-        private void ExpandBounds(Transform parent) {
-            foreach (Transform child in parent) {
-                var filter = child.GetComponent<MeshFilter>();
-                if (filter != null) {
-                    var mesh = filter.mesh;
-                    if (mesh == null) continue;
-                    this.bounds.Encapsulate(mesh.bounds);
-                }
-                ExpandBounds(child);
+        private void CenterOnPivot() {
+            
+            foreach (Transform child in transform)
+                child.localPosition -= aggregateBounds.center;
+        }
+
+        private void AggregateMeshes() {
+
+            var meshFilters = GetComponentsInChildren<MeshFilter>();
+            if (meshFilters == null || meshFilters.Length == 0) return;
+            var bounds = meshFilters[0].mesh.bounds;
+            foreach (var meshFilter in meshFilters) {
+                bounds.Encapsulate(meshFilter.mesh.bounds);
+                meshFilter.mesh.RecalculateNormals(60);
             }
+
+            aggregateBounds = bounds;
         }
     }
 }

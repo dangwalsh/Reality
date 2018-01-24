@@ -25,6 +25,8 @@ GameObject:
   - component: {fileID: 114625121574882904}
   - component: {fileID: 114040094932173096}
   - component: {fileID: 114509726322869662}
+  - component: {fileID: 114280598104731636}
+  - component: {fileID: 114388156587733000}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -72,7 +74,30 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
-  QuantizeAmount: 0.01
+--- !u!114 &114280598104731636
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1099807515107140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf90af149075ff94eaea8fbb83b15ca3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LoadingScreen: {fileID: 1210469408271068, guid: 1a7f5d695f98e934ba40b5efa5fe8d69,
+    type: 2}
+--- !u!114 &114388156587733000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1099807515107140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc29ad630c433df48976339c2a25af4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114509726322869662
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,7 +125,6 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
-  QuantizeAmount: 0.01
 --- !u!114 &114625121574882904
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -20,11 +20,13 @@
         protected int count;
         protected int length;
 
-        void Start() {
+        void OnEnable() {
 
             count = 0;
             length = Snaps.Length;
             parentMenu = transform.parent.gameObject;
+            foreach (var snap in Snaps)
+                snap.SnapLabel.SetActive(false);
             Snaps[count].SnapLabel.SetActive(true);
             SetSnapValue();
         }

@@ -4,36 +4,44 @@ using System.IO;
 using UnityEngine;
 using Reality.ObjReader;
 using System.Linq;
+using System.Collections;
 
 public class Geometry {
     const int MAXVERTS = 63000;
     const int MAXATTEMPTS = 1;
     static string directory = "";
 
-    public static void Initialize(string path, GameObject model) {
+    static Vector3[] verts = null;
+    static Vector3[] norms = null;
+    static Vector2[] uvs = null;
+
+    public static IEnumerator Initialize(string path, GameObject root) {
 
         directory = GetDirectoryName(path);
-        var zipTask = Facade.UnzipFileAsync(path);
-        var objPaths = zipTask.Result;
+        //yield return null;
 
-        foreach(string objPath in objPaths) {
+        var zipTask = Facade.UnzipFileAsync(path);
+        //yield return null;
+
+        var objPaths = zipTask.Result;
+        //yield return null;
+
+        foreach (string objPath in objPaths) {
             int count = Facade.ImportObjects(objPath);
-            float[] bounds = Facade.GetBounds();
-            float size = bounds.Max();
-            Vector3[] verts = null;
-            Vector3[] norms = null;
-            Vector2[] uvs = null;
+            //yield return null;
 
             ConvertVertices(ref verts);
             ConvertNormals(ref norms);
             ConvertUVs(ref uvs);
+            yield return null;
 
-            CreateObjects(count, verts, norms, uvs, size, model);
-        } 
-        
+            CreateObjects(count, verts, norms, uvs, root);
+            //yield return null;
+        }
+        yield return null;
     }
 
-    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, float size, GameObject model) {
+    static void CreateObjects(int count, Vector3[] verts, Vector3[] norms, Vector2[] uvs, GameObject root) {
 
         for (int obj = 0; obj < count; ++obj) {
             var vertIndex = Facade.GetVertexIndexOfObject(obj);
@@ -45,7 +53,7 @@ public class Geometry {
 
             if (parent == null) {
                 parent = new GameObject(name + " Parent");
-                parent.transform.parent = model.transform;
+                parent.transform.parent = root.transform;
 
                 var material = CreateMaterial(obj, "Standard");
 
@@ -67,10 +75,11 @@ public class Geometry {
 
                 mesh.vertices = GetVerts(verts, vertIndex, sector);
                 mesh.uv = GetUVs(uvs, uvIndex, sector);
-                mesh.normals = GetNorms(norms, normIndex, sector);
+                //mesh.normals = GetNorms(norms, normIndex, sector);
                 mesh.triangles = Enumerable
                     .Range(0, mesh.vertices.Length).ToArray();
-                if (mesh.normals.Length == 0) mesh.RecalculateNormals();
+                //if (mesh.normals.Length == 0)
+                //    mesh.RecalculateNormals();
                 
                 var t = TangentBasis.GetMeshTangets(mesh, 1.0f);
                 mesh.tangents = t;
