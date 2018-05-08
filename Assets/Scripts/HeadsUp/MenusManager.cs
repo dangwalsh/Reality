@@ -15,7 +15,7 @@
 
             MainMenu.SetActive(true);
             pSender.SetActive(false);
-            MainMenu.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, 2.0f));
+            MainMenu.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, 1.0f));
         }
 
         public void ShowRotateMenu() {

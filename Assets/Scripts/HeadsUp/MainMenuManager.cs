@@ -19,7 +19,7 @@
 
         private void SetPosition() {
 
-            var pos = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, 2.0f));
+            var pos = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, 1.0f));
             gameObject.transform.position = pos;
         }
 

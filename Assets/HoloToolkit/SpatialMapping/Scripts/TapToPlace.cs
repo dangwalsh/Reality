@@ -123,13 +123,13 @@ namespace HoloToolkit.Unity.SpatialMapping
             }
         }
 
-        public virtual void OnInputClicked(InputEventData eventData)
+        public virtual void OnInputClicked(InputEventData eventData) 
         {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
 
             // If the user is in placing mode, display the spatial mapping mesh.
-            if (IsBeingPlaced)
+            if (IsBeingPlaced) 
             {
                 spatialMappingManager.DrawVisualMeshes = true;
 
@@ -138,7 +138,7 @@ namespace HoloToolkit.Unity.SpatialMapping
                 anchorManager.RemoveAnchor(gameObject);
             }
             // If the user is not in placing mode, hide the spatial mapping mesh.
-            else
+            else 
             {
                 spatialMappingManager.DrawVisualMeshes = false;
                 // Add world anchor when object placement is done.

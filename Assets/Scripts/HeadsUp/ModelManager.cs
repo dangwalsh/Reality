@@ -7,6 +7,7 @@
     public class ModelManager : MonoBehaviour {
 
         public float scaleFactor = 10;
+        public float distanceFrom = 10;
 
         Bounds aggregateBounds;
 
@@ -16,7 +17,7 @@
             CenterOnPivot();
 
             transform.localScale /= aggregateBounds.size.magnitude / scaleFactor;
-            transform.localPosition += new Vector3(0, 0, 10);
+            transform.localPosition += new Vector3(0, 0, distanceFrom);
         }
 
         private void CenterOnPivot() {
