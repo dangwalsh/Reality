@@ -3,6 +3,10 @@
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
 
+    [RequireComponent(typeof(HandRotate))]
+    [RequireComponent(typeof(HandScale))]
+    [RequireComponent(typeof(GazeTranslate))]
+    [RequireComponent(typeof(PlacementController))]
     public class MenuDelegate : MonoBehaviour, IInputClickHandler {
 
         public MenusManager MenusManager{
@@ -30,6 +34,7 @@
                 rotateMenuManager.handController = GetComponent<HandRotate>();
                 scaleMenuManager.handController = GetComponent<HandScale>();
                 translateMenuManager.gazeController = GetComponent<GazeTranslate>();
+                translateMenuManager.placement = GetComponent<PlacementController>();
                 mainMenuManager.ShowMenu();
             }
             else {

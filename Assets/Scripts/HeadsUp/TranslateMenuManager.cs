@@ -7,6 +7,7 @@
         public MenusManager menuController;
         public GazeTransformation gazeController;
         public Transform mainMenu;
+        public PlacementController placement;
 
         bool isTransforming;
 
@@ -31,10 +32,12 @@
 
         private void OnTransformationStarted() {
             isTransforming = true;
+            placement.OnClick();
         }
 
         private void OnTransformationStopped() {
             isTransforming = false;
+            placement.OnClick();
             menuController.ReturnHome(gameObject);
         }
     }
