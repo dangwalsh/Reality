@@ -2,11 +2,12 @@
     using UnityEngine;
 
     public class ScaleMenuManager : MonoBehaviour {
+
         public GameObject leftIndicator;
         public GameObject rightIndicator;
         public GameObject leftControl;
         public GameObject rightControl;
-        public TextMesh textField;
+        public TextMesh textField; 
 
         public MenusManager menuController;
         public HandScale handController;
@@ -66,11 +67,13 @@
         private void OnTransformationStarted() {
 
             isTransforming = true;
+            handController.OnClick();
         }
 
         private void OnTransformationStopped() {
 
             isTransforming = false;
+            handController.OnClick();
             menuController.ReturnHome(gameObject);
         }
 

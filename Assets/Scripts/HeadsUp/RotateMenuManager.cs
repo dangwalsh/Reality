@@ -68,12 +68,14 @@
         private void OnTransformationStarted() {
 
             isTransforming = true;
+            handController.OnClick();
         }
 
         private void OnTransformationStopped() {
 
             isTransforming = false;
             menuController.ReturnHome(gameObject);
+            handController.OnClick();
         }
 
         private void ResetControls() {

@@ -10,15 +10,15 @@
 
         #region MonoBehaviour Members
         void Start() {
-            LoadingScreen.SetActive(true);
-            Time.timeScale = 0.0f;
+            //LoadingScreen.SetActive(true);
+            //Time.timeScale = 0.0f;
 
             AttachMenuSystem();
             var path = UnityEngine.WSA.Application.arguments.Replace("File=", "");        
             var adapter = gameObject.GetComponent<GeometryAdapter>();
             adapter.Initialize(path, gameObject);
 
-            StartCoroutine(RemoveLoadingScreen());
+            //StartCoroutine(RemoveLoadingScreen());
         }
         #endregion
 

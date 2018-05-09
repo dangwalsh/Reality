@@ -15,8 +15,7 @@
     /// TapToPlace also adds a WorldAnchor component to enable persistence.
     /// </summary>
 
-    public class PlacementController : MonoBehaviour
-    {
+    public class PlacementController : MonoBehaviour {
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
@@ -110,6 +109,7 @@
         }
 
         public void OnClick() {
+
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
 

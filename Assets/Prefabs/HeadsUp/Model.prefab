@@ -22,12 +22,11 @@ GameObject:
   - component: {fileID: 114995608034314108}
   - component: {fileID: 114544283688855928}
   - component: {fileID: 114123576836422120}
-  - component: {fileID: 114625121574882904}
-  - component: {fileID: 114040094932173096}
+  - component: {fileID: 114046600305586216}
   - component: {fileID: 114509726322869662}
+  - component: {fileID: 114898321862033046}
   - component: {fileID: 114280598104731636}
   - component: {fileID: 114388156587733000}
-  - component: {fileID: 114510394980352882}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -48,18 +47,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114040094932173096
+--- !u!114 &114046600305586216
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1099807515107140}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50cb0bf98777c7a47aaf016e0186a622, type: 3}
+  m_Script: {fileID: 11500000, guid: ff64c98e1b4f3f94c8f36654ef7cb7eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetObject: {fileID: 1099807515107140}
+  HostTransform: {fileID: 4314251618210616}
+  DistanceScale: 2
+  IsOrientTowardsUser: 0
+  IsKeepUpright: 1
+  IsBeingPlaced: 0
 --- !u!114 &114123576836422120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,6 +78,7 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
+  IsBeingPlaced: 0
 --- !u!114 &114280598104731636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -112,21 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaleFactor: 1
   distanceFrom: 2
---- !u!114 &114510394980352882
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1099807515107140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00c66d7e44258ea42be847e18217b5c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SavedAnchorFriendlyName: SavedAnchorFriendlyName
-  PlaceParentOnTap: 0
-  ParentGameObjectToPlace: {fileID: 0}
-  IsBeingPlaced: 0
 --- !u!114 &114544283688855928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -142,21 +131,18 @@ MonoBehaviour:
   DistanceScale: 2
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
---- !u!114 &114625121574882904
+  IsBeingPlaced: 0
+--- !u!114 &114898321862033046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1099807515107140}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf98ccf33cc820499416217e7a5a6d2, type: 3}
+  m_Script: {fileID: 11500000, guid: be2d574cf16016947a20404963834e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HostTransform: {fileID: 4314251618210616}
-  DistanceScale: 2
-  IsOrientTowardsUser: 0
-  IsKeepUpright: 1
 --- !u!114 &114995608034314108
 MonoBehaviour:
   m_ObjectHideFlags: 1

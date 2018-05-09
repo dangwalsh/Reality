@@ -5,8 +5,7 @@
 
     [RequireComponent(typeof(HandRotate))]
     [RequireComponent(typeof(HandScale))]
-    [RequireComponent(typeof(GazeTranslate))]
-    [RequireComponent(typeof(PlacementController))]
+    [RequireComponent(typeof(HandTranslate))]
     public class MenuDelegate : MonoBehaviour, IInputClickHandler {
 
         public MenusManager MenusManager{
@@ -33,8 +32,8 @@
                 menusManager.ThisModel = gameObject;
                 rotateMenuManager.handController = GetComponent<HandRotate>();
                 scaleMenuManager.handController = GetComponent<HandScale>();
-                translateMenuManager.gazeController = GetComponent<GazeTranslate>();
-                translateMenuManager.placement = GetComponent<PlacementController>();
+                translateMenuManager.handController = GetComponent<HandTranslate>();
+
                 mainMenuManager.ShowMenu();
             }
             else {

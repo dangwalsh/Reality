@@ -5,39 +5,38 @@
     public class TranslateMenuManager : MonoBehaviour {
 
         public MenusManager menuController;
-        public GazeTransformation gazeController;
+        public HandTranslate handController;
         public Transform mainMenu;
-        public PlacementController placement;
 
         bool isTransforming;
 
         private void OnEnable() {
-            if (gazeController == null) return;
+            if (handController == null) return;
 
-            gazeController.StartedTransformation += OnTransformationStarted;
-            gazeController.StoppedTransformation += OnTransformationStopped;
-            gazeController.enabled = true;
+            handController.StartedTransformation += OnTransformationStarted;
+            handController.StoppedTransformation += OnTransformationStopped;
+            handController.enabled = true;
 
             gameObject.transform.position = mainMenu.position;
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
         private void OnDisable() {
-            if (gazeController == null) return;
+            if (handController == null) return;
 
-            gazeController.StartedTransformation -= OnTransformationStarted;
-            gazeController.StoppedTransformation -= OnTransformationStopped;
-            gazeController.enabled = false;
+            handController.StartedTransformation -= OnTransformationStarted;
+            handController.StoppedTransformation -= OnTransformationStopped;
+            handController.enabled = false;
         }
 
         private void OnTransformationStarted() {
             isTransforming = true;
-            placement.OnClick();
+            handController.OnClick();
         }
 
         private void OnTransformationStopped() {
             isTransforming = false;
-            placement.OnClick();
+            handController.OnClick();
             menuController.ReturnHome(gameObject);
         }
     }

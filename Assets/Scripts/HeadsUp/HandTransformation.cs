@@ -4,6 +4,7 @@
     using UnityEngine;
     using HoloToolkit.Unity;
     using HoloToolkit.Unity.InputModule;
+    using HoloToolkit.Unity.SpatialMapping;
 
     public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
         public event Action StartedTransformation;
@@ -20,6 +21,24 @@
 
         [Tooltip("Should the object be kept upright as it is being dragged?")]
         public bool IsKeepUpright = true;
+
+
+
+
+        //[Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
+        //public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
+
+        //[Tooltip("Place parent on tap instead of current game object.")]
+        //public bool PlaceParentOnTap;
+
+        //[Tooltip("Specify the parent game object to be moved on tap, if the immediate parent is not desired.")]
+        //public GameObject ParentGameObjectToPlace;
+
+        [Tooltip("Setting this to true will enable the user to move and place the object in the scene without needing to tap on the object. Useful when you want to place an object immediately.")]
+        public bool IsBeingPlaced;
+
+
+
 
         public float QuantizeValue { get; set; }
 
@@ -51,6 +70,9 @@
         protected Vector3 draggingPosition;
         protected Vector3 objRefForward;
         protected Quaternion draggingRotation;
+        //protected WorldAnchorManager anchorManager;
+        //protected SpatialMappingManager spatialMappingManager;
+        protected ModelAnchorManager modelAnchorManager;
 
         public void OnFocusEnter() {
             if (isGazed)
@@ -80,6 +102,33 @@
         public void OnSourceLost(SourceStateEventData eventData) {
             StopTransform();
         }
+
+
+
+
+        public void OnClick() {
+
+            // On each tap gesture, toggle whether the user is in placing mode.
+            IsBeingPlaced = !IsBeingPlaced;
+
+            // If the user is in placing mode, display the spatial mapping mesh.
+            if (IsBeingPlaced) {
+                modelAnchorManager.SpatialMappingManager.DrawVisualMeshes = true;
+
+                Debug.Log(gameObject.name + " : Removing existing world anchor if any.");
+
+                modelAnchorManager.AnchorManager.RemoveAnchor(gameObject);
+            }
+            // If the user is not in placing mode, hide the spatial mapping mesh.
+            else {
+                modelAnchorManager.SpatialMappingManager.DrawVisualMeshes = false;
+                // Add world anchor when object placement is done.
+                modelAnchorManager.AnchorManager.AttachAnchor(gameObject, modelAnchorManager.SavedAnchorFriendlyName);
+            }
+        }
+
+
+
 
         private void StartTransform() {
             InputManager.Instance.PushModalInputHandler(gameObject);
@@ -172,6 +221,38 @@
                 HostTransform = transform;
             }
             mainCamera = Camera.main;
+
+            modelAnchorManager = GetComponent<ModelAnchorManager>();
+
+            //// Make sure we have all the components in the scene we need.
+            //anchorManager = WorldAnchorManager.Instance;
+            //if (anchorManager == null) {
+            //    Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
+            //}
+
+            //spatialMappingManager = SpatialMappingManager.Instance;
+            //if (spatialMappingManager == null) {
+            //    Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+            //}
+
+            //if (anchorManager != null && spatialMappingManager != null) {
+            //    anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
+            //}
+            //else {
+            //    // If we don't have what we need to proceed, we may as well remove ourselves.
+            //    Destroy(this);
+            //}
+
+            ////if (PlaceParentOnTap) {
+            ////    if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform)) {
+            ////        Debug.LogError("The specified parent object is not a parent of this object.");
+            ////    }
+
+            ////    DetermineParent();
+            ////}
+
+
+
         }
 
         private void Update() {
@@ -182,5 +263,25 @@
         private void OnEnable() {
             this.HandValue = 0.0f;
         }
+
+
+
+
+        //private void DetermineParent() {
+        //    if (ParentGameObjectToPlace == null) {
+        //        if (gameObject.transform.parent == null) {
+        //            Debug.LogError("The selected GameObject has no parent.");
+        //            PlaceParentOnTap = false;
+        //        }
+        //        else {
+        //            Debug.LogError("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
+        //            ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
+        //        }
+        //    }
+        //}
+
+
+
+
     }
 }
