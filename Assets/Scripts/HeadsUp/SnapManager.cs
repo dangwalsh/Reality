@@ -53,7 +53,7 @@
             if (snapValue == 0) return;
             
             SetSnapVector();
-            StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.5f));
+            StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.25f));
         }
 
         protected abstract void SetSnapVector();
