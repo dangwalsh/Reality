@@ -12,10 +12,14 @@ Shader "HoloToolkit/Wireframe"
     SubShader
     {
         Tags { "RenderType" = "Opaque" }
+		//Tags { "RenderType" = "Transparent" "Queue" = "Transparent" }
 
         Pass
         {
             Offset 50, 100
+			//Blend SrcAlpha OneMinusSrcAlpha
+			//Cull Back
+			//AlphaTest Greater 0.5
 
             CGPROGRAM
             #pragma vertex vert

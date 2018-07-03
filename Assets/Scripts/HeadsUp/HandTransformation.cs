@@ -40,7 +40,10 @@
 
 
 
-        public float QuantizeValue { get; set; }
+        public float QuantizeValue {
+            get;
+            set;
+        }
 
         public float TransformValue { get; set; }
 

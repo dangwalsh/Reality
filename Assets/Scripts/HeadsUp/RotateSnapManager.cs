@@ -1,29 +1,30 @@
 ﻿namespace HeadsUp {
 
+    using System.Collections;
     using UnityEngine;
 
     public class RotateSnapManager : SnapManager {
 
-        protected override void SetSnapValue() {
+        protected override void SetSnapVector() {
 
-            var menusManager = parentMenu.GetComponentInParent<MenusManager>();
-            if (menusManager == null) return;
-            var handController = menusManager.ThisModel.GetComponent<HandRotate>();
-            if (handController == null) return;
-
-            var snapValue = Snaps[count].SnapValue;
+            startVector = menusManager.ThisModel.transform.rotation.eulerAngles;
+            float snapped = Mathf.Round(startVector.y / snapValue) * snapValue;
+            endVector = new Vector3(0, snapped, 0);
             handController.QuantizeValue = snapValue;
-            InitializeSnap(menusManager.ThisModel.transform, snapValue, handController);
+            handController.TransformValue = snapped;
         }
 
-        protected override void InitializeSnap(Transform thisTransform, float snapValue, HandTransformation handController) {
+        protected override IEnumerator LerpToSnap(Transform thisTransform, float duration) {
 
-            var initVal = thisTransform.rotation.eulerAngles.y;
-            var snapVal = Mathf.Round(initVal / snapValue) * snapValue;
-            var snapQuat = Quaternion.Euler(0, snapVal, 0);
-
-            thisTransform.rotation = snapQuat;
-            handController.TransformValue = snapQuat.eulerAngles.y;
+            float t = 0;
+            while (t < 1) {
+                handController.OnClick();      
+                thisTransform.eulerAngles = Vector3.Lerp(startVector, endVector, t);   
+                t += Time.deltaTime / duration;
+                handController.OnClick();
+                yield return null;
+            }
+            thisTransform.eulerAngles = endVector;
         }
     }
 }

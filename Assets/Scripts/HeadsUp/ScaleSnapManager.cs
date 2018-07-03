@@ -1,28 +1,27 @@
 ﻿namespace HeadsUp {
 
     using UnityEngine;
-    using HoloToolkit.Unity.InputModule;
+    using System.Collections;
 
     public class ScaleSnapManager : SnapManager {
 
-        protected override void SetSnapValue() {
+        protected override void SetSnapVector() {
 
-            var menusManager = parentMenu.GetComponentInParent<MenusManager>();
-            if (menusManager == null) return;
-            var handController = menusManager.ThisModel.GetComponent<HandScale>();
-            if (handController == null) return;
-
-            var snapValue = Snaps[count].SnapValue;
-            //handTransformation.QuantizeValue = snapValue;
-            InitializeSnap(menusManager.ThisModel.transform, snapValue, handController);
+            startVector = menusManager.ThisModel.transform.localScale;
+            endVector = new Vector3(1 / snapValue, 1 / snapValue, 1 / snapValue);
+            handController.TransformValue = 1 / snapValue;
         }
 
-        protected override void InitializeSnap(Transform thisTransform, float snapValue, HandTransformation handController) {
+        protected override IEnumerator LerpToSnap(Transform thisModel, float duration) {
 
-            if (snapValue == 0) return;
-            var scaleFactor = 1 / snapValue;
-            thisTransform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
-            handController.TransformValue = scaleFactor;
+            float t = 0;
+            while (t < 1) {
+                thisModel.localScale = Vector3.Lerp(startVector, endVector, t);
+                t += Time.deltaTime / duration;
+                yield return null;
+            }
+            thisModel.localScale = endVector;
+
         }
     }
 }

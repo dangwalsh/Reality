@@ -21,9 +21,9 @@
         }
 
         private void CenterOnPivot() {
-            
+            var objectBase = aggregateBounds.center - new Vector3(0, aggregateBounds.extents.y, 0);
             foreach (Transform child in transform)
-                child.localPosition -= aggregateBounds.center;
+                child.localPosition -= objectBase;
         }
 
         private void AggregateMeshes() {

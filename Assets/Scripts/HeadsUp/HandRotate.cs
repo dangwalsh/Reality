@@ -37,7 +37,7 @@
         }
 
         private float Quantize(float val, float quant) {
-
+            if (quant == 0) quant = 0.01f;
             return Mathf.Round(val / quant) * quant;
         }
     }
