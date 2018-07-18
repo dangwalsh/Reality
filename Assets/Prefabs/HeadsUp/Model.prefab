@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleFactor: 1
-  distanceFrom: 2
+  distanceFrom: 3
 --- !u!114 &114544283688855928
 MonoBehaviour:
   m_ObjectHideFlags: 1

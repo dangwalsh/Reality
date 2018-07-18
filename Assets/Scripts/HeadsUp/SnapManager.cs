@@ -1,14 +1,17 @@
-﻿namespace HeadsUp {
+﻿namespace HeadsUp
+{
 
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
     using System;
     using System.Collections;
 
-    public abstract class SnapManager : MonoBehaviour, IInputClickHandler {
+    public abstract class SnapManager : MonoBehaviour, IInputClickHandler
+    {
 
         [Serializable]
-        public struct Snap {
+        public struct Snap
+        {
 
             public GameObject SnapLabel;
             public float SnapValue;
@@ -26,7 +29,8 @@
         protected Vector3 startVector;
         protected Vector3 endVector;
 
-        void OnEnable() {
+        void OnEnable()
+        {
 
             length = Snaps.Length;
 
@@ -36,27 +40,41 @@
             if (menusManager == null) return;
             handController = menusManager.ThisModel.GetComponent<HandTransformation>();
             if (menusManager == null) return;
-            
+
             foreach (var snap in Snaps)
                 snap.SnapLabel.SetActive(false);
 
             Snaps[count].SnapLabel.SetActive(true);
         }
 
-        public void OnInputClicked(InputEventData eventData) {
+        //public void OnInputClicked(InputEventData eventData)
+        //{
 
+        //    Snaps[count].SnapLabel.SetActive(false);
+        //    count++;
+        //    if (count >= length) count = 0;
+        //    Snaps[count].SnapLabel.SetActive(true);
+        //    snapValue = Snaps[count].SnapValue;
+        //    if (snapValue == 0) return;
+
+        //    SetSnapVector();
+        //    StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.25f));
+        //}
+
+        protected abstract void SetSnapVector();
+        protected abstract IEnumerator LerpToSnap(Transform thisModel, float duration);
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
             Snaps[count].SnapLabel.SetActive(false);
             count++;
             if (count >= length) count = 0;
             Snaps[count].SnapLabel.SetActive(true);
             snapValue = Snaps[count].SnapValue;
             if (snapValue == 0) return;
-            
+
             SetSnapVector();
             StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.25f));
         }
-
-        protected abstract void SetSnapVector();
-        protected abstract IEnumerator LerpToSnap(Transform thisModel, float duration);
     }
 }

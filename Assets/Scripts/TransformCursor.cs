@@ -8,7 +8,7 @@ using UnityEngine;
 /// The object cursor can switch between different game objects based on its state.
 /// It simply links the game object to set to active with its associated cursor state.
 /// </summary>
-public class TransformCursor : Cursor {
+public class TransformCursor : MyCursor {
     [Serializable]
     public struct ObjectCursorDatum {
         public string Name;

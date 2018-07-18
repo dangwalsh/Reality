@@ -1,35 +1,40 @@
-﻿namespace HeadsUp {
-
+﻿namespace HeadsUp
+{
     using System.Collections;
     using UnityEngine;
+    using UnityEngine.WSA;
 
-    public class ModelInstance : MonoBehaviour {
+    [RequireComponent(typeof(GeometryAdapter))]
+    public class ModelInstance : MonoBehaviour
+    {
 
         [Tooltip("The GameObject displayed while loading content.")]
         public GameObject LoadingScreen;
 
         #region MonoBehaviour Members
-        void Start() {
-            //LoadingScreen.SetActive(true);
-            //Time.timeScale = 0.0f;
-
+        void Start()
+        {
             AttachMenuSystem();
-            var path = UnityEngine.WSA.Application.arguments.Replace("File=", "");        
+            //var path = UnityEngine.WSA.Application.arguments.Replace("File=", "");
             var adapter = gameObject.GetComponent<GeometryAdapter>();
-            adapter.Initialize(path, gameObject);
 
-            //StartCoroutine(RemoveLoadingScreen());
+#if ENABLE_WINMD_SUPPORT
+            UnityEngine.WSA.Application.InvokeOnUIThread(new AppCallbackItem(() => { adapter.OpenFileAsync(); }), false);
+#endif
+            //adapter.Initialize(path, gameObject);
         }
         #endregion
 
-        void AttachMenuSystem() {
+        void AttachMenuSystem()
+        {
             var menuDelegate = gameObject.GetComponent<MenuDelegate>();
             var menusManagerObject = GameObject.Find("MenusManager");
             var menusManager = menusManagerObject.GetComponent<MenusManager>();
             menuDelegate.MenusManager = menusManager;
         }
 
-        IEnumerator RemoveLoadingScreen() {
+        IEnumerator RemoveLoadingScreen()
+        {
             yield return new WaitForSecondsRealtime(1);
             LoadingScreen.SetActive(false);
 

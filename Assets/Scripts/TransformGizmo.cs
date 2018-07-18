@@ -231,7 +231,7 @@ public class TransformGizmo : MonoBehaviour {
         var renderer = line.AddComponent<LineRenderer>();
         renderer.widthMultiplier = 0.02f;
         renderer.useWorldSpace = false;
-        renderer.numPositions = 2;
+        renderer.positionCount = 2;
         renderer.material = this.Material;
         return renderer;
     }

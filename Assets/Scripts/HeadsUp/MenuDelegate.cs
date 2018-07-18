@@ -2,6 +2,7 @@
 
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
+    using System;
 
     [RequireComponent(typeof(HandRotate))]
     [RequireComponent(typeof(HandScale))]
@@ -25,9 +26,27 @@
         ScaleMenuManager scaleMenuManager;
         TranslateMenuManager translateMenuManager;
 
-        public void OnInputClicked(InputEventData eventData) {
+        //public void OnInputClicked(InputEventData eventData) {
 
-            if (!menusManager.MainMenu.activeSelf) {
+        //    if (!menusManager.MainMenu.activeSelf) {
+
+        //        menusManager.ThisModel = gameObject;
+        //        rotateMenuManager.handController = GetComponent<HandRotate>();
+        //        scaleMenuManager.handController = GetComponent<HandScale>();
+        //        translateMenuManager.handController = GetComponent<HandTranslate>();
+
+        //        mainMenuManager.ShowMenu();
+        //    }
+        //    else {
+
+        //        mainMenuManager.DismissMenu();
+        //    }
+        //}
+
+        public void OnInputClicked(InputClickedEventData eventData) {
+
+            if (!menusManager.MainMenu.activeSelf)
+            {
 
                 menusManager.ThisModel = gameObject;
                 rotateMenuManager.handController = GetComponent<HandRotate>();
@@ -36,7 +55,8 @@
 
                 mainMenuManager.ShowMenu();
             }
-            else {
+            else
+            {
 
                 mainMenuManager.DismissMenu();
             }

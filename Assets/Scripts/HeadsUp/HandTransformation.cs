@@ -142,7 +142,9 @@
             Vector3 gazeHitPosition = GazeManager.Instance.HitInfo.point;
 
             Vector3 handPosition;
-            currentInputSource.TryGetPosition(currentInputSourceId, out handPosition);
+
+            // TODO: verify TryGetPoisition should be TryGetPointerPosition
+            currentInputSource.TryGetGripPosition(currentInputSourceId, out handPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition();
             handRefDistance = Vector3.Magnitude(handPosition - pivotPosition);
@@ -169,7 +171,9 @@
         private void UpdateTransform() {
             // get the hand's current position vector
             Vector3 newHandPosition;
-            currentInputSource.TryGetPosition(currentInputSourceId, out newHandPosition);
+
+            // TODO: verify TryGetPoisition should be TryGetPointerPosition
+            currentInputSource.TryGetGripPosition(currentInputSourceId, out newHandPosition);
             // this estimates where your head is by using the camera's position
             Vector3 pivotPosition = GetHandPivotPosition();
             // calculate the hand's direction vector relative to the head by subtracting

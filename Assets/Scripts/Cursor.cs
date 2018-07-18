@@ -1,14 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License. See LICENSE in the project root for license information.
-
-using System;
+﻿using System;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
-    /// <summary>
-    /// Object that represents a cursor in 3D space controlled by gaze.
-    /// </summary>
-public abstract class Cursor : MonoBehaviour, ICursor
+/// <summary>
+/// Object that represents a cursor in 3D space controlled by gaze.
+/// </summary>
+public abstract class MyCursor : MonoBehaviour, ICursor
 {
     /// <summary>
     /// Enum for current cursor state
@@ -159,6 +156,14 @@ public abstract class Cursor : MonoBehaviour, ICursor
         {
             isVisible = value;
             SetVisiblity(isVisible);
+        }
+    }
+
+    public IPointingSource Pointer
+    {
+        get
+        {
+            throw new NotImplementedException();
         }
     }
 
@@ -489,5 +494,15 @@ public abstract class Cursor : MonoBehaviour, ICursor
     public virtual void OnCursorStateChange(CursorStateEnum state)
     {
         cursorState = state;
+    }
+
+    public void OnInputClicked(InputClickedEventData eventData)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void SetVisibility(bool visible)
+    {
+        throw new NotImplementedException();
     }
 }

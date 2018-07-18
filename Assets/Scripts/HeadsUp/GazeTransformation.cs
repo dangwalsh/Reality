@@ -58,7 +58,11 @@
                 UpdateTransform();
         }
 
-        public void OnInputClicked(InputEventData eventData) {
+        //public void OnInputClicked(InputEventData eventData) {
+        //    StopTransform();
+        //}
+
+        public void OnInputClicked(InputClickedEventData eventData) {
             StopTransform();
         }
     }
