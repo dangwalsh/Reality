@@ -143,7 +143,6 @@
 
             Vector3 handPosition;
 
-            // TODO: verify TryGetPoisition should be TryGetPointerPosition
             currentInputSource.TryGetGripPosition(currentInputSourceId, out handPosition);
 
             Vector3 pivotPosition = GetHandPivotPosition();
@@ -172,7 +171,6 @@
             // get the hand's current position vector
             Vector3 newHandPosition;
 
-            // TODO: verify TryGetPoisition should be TryGetPointerPosition
             currentInputSource.TryGetGripPosition(currentInputSourceId, out newHandPosition);
             // this estimates where your head is by using the camera's position
             Vector3 pivotPosition = GetHandPivotPosition();

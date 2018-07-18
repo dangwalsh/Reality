@@ -51,6 +51,11 @@
             }
             else
             {
+                menusManager.ThisModel = null;
+                rotateMenuManager.handController = null;
+                scaleMenuManager.handController = null;
+                translateMenuManager.handController = null;
+
                 mainMenuManager.DismissMenu();
             }
 

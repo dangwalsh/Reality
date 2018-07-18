@@ -1,8 +1,10 @@
-﻿namespace HeadsUp {
-
+﻿namespace HeadsUp
+{
+    using HoloToolkit.Unity.InputModule;
     using UnityEngine;
 
-    public class RotateMenuManager : MonoBehaviour {
+    public class RotateMenuManager : MonoBehaviour, IInputClickHandler
+    {
 
         public GameObject leftIndicator;
         public GameObject rightIndicator;
@@ -18,7 +20,8 @@
         bool isTransforming;
 
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             if (handController == null) return;
 
             handController.StartedTransformation += OnTransformationStarted;
@@ -29,7 +32,8 @@
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             if (handController == null) return;
 
             handController.StartedTransformation -= OnTransformationStarted;
@@ -37,55 +41,64 @@
             handController.enabled = false;
         }
 
-        private void Start() {
-
+        private void Start()
+        {
             ResetControls();
         }
 
-        private void Update() {
+        private void Update()
+        {
 
-            if (handController.HandValue < 0) {
+            if (handController.HandValue < 0)
+            {
                 leftControl.SetActive(false);
                 leftIndicator.SetActive(false);
                 rightControl.SetActive(true);
                 rightIndicator.SetActive(true);
                 rightControl.transform.localPosition = new Vector3(Mathf.Abs(handController.HandValue), 0, 0);
             }
-            else if (handController.HandValue > 0) {
+            else if (handController.HandValue > 0)
+            {
                 rightControl.SetActive(false);
                 rightIndicator.SetActive(false);
                 leftControl.SetActive(true);
                 leftIndicator.SetActive(true);
                 leftControl.transform.localPosition = new Vector3(Mathf.Abs(handController.HandValue), 0, 0);
             }
-            else {
+            else
+            {
                 ResetControls();
             }
 
             textField.text = handController.TransformValue.ToString("n0");
         }
 
-        private void OnTransformationStarted() {
-
+        private void OnTransformationStarted()
+        {
             isTransforming = true;
             handController.OnClick();
         }
 
-        private void OnTransformationStopped() {
-
+        private void OnTransformationStopped()
+        {
             isTransforming = false;
             menuController.ReturnHome(gameObject);
             handController.OnClick();
         }
 
-        private void ResetControls() {
-
+        private void ResetControls()
+        {
             leftControl.transform.localPosition = Vector3.zero;
             rightControl.transform.localPosition = Vector3.zero;
             leftControl.SetActive(false);
             leftIndicator.SetActive(false);
             rightControl.SetActive(false);
             rightIndicator.SetActive(false);
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            eventData.Use();
         }
     }
 }

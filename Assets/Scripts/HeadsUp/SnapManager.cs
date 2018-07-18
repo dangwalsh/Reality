@@ -31,7 +31,6 @@
 
         void OnEnable()
         {
-
             length = Snaps.Length;
 
             parentMenu = transform.parent.gameObject;
@@ -47,19 +46,6 @@
             Snaps[count].SnapLabel.SetActive(true);
         }
 
-        //public void OnInputClicked(InputEventData eventData)
-        //{
-
-        //    Snaps[count].SnapLabel.SetActive(false);
-        //    count++;
-        //    if (count >= length) count = 0;
-        //    Snaps[count].SnapLabel.SetActive(true);
-        //    snapValue = Snaps[count].SnapValue;
-        //    if (snapValue == 0) return;
-
-        //    SetSnapVector();
-        //    StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.25f));
-        //}
 
         protected abstract void SetSnapVector();
         protected abstract IEnumerator LerpToSnap(Transform thisModel, float duration);
@@ -75,6 +61,8 @@
 
             SetSnapVector();
             StartCoroutine(LerpToSnap(menusManager.ThisModel.transform, 0.25f));
+
+            eventData.Use();
         }
     }
 }

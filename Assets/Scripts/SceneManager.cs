@@ -47,7 +47,7 @@
             eventData.Use();
         }
 
-        #region Open from file association
+        #region Open from OneDrive
         //[Tooltip("The Prefab that gets instantiated to hold a new model.")]
         //public GameObject ModelManagerPrefab;
         //private string args = "";

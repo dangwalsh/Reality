@@ -16,7 +16,10 @@
         #region MonoBehaviour Members
         void Start()
         {
-            transform.localPosition += new Vector3(0, 0, distanceFrom);
+            var relativePosition = Camera.main.transform.InverseTransformDirection(0, 0, distanceFrom);
+            transform.localPosition = relativePosition;
+
+            //transform.localPosition += new Vector3(0, 0, distanceFrom);
         }
         #endregion
 
