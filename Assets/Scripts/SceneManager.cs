@@ -1,39 +1,64 @@
 ﻿namespace HeadsUp
 {
-
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
 
-    public class SceneManager : MonoBehaviour, IInputHandler
+    public class SceneManager : MonoBehaviour, IInputClickHandler
     {
-        public void OnInputDown(InputEventData eventData)
+        public MenusManager MenusManager
         {
-            Debug.Log("Input Down");
+            get { return menusManager; }
+            set
+            {
+                menusManager = value;
+                mainMenuManager = menusManager.MainMenu.GetComponent<MainMenuManager>();
+            }
         }
 
-        public void OnInputUp(InputEventData eventData)
+        MenusManager menusManager;
+        MainMenuManager mainMenuManager;
+
+        #region MonoBehaviour Members
+        void Awake()
         {
-            Debug.Log("Input Down");
+            MenusManager = GameObject.Find("MenusManager").GetComponent<MenusManager>();
         }
 
+        void OnEnable()
+        {
+            InputManager.Instance.PushFallbackInputHandler(gameObject);
+        }
+
+        void OnDisable()
+        {
+            InputManager.Instance.PopFallbackInputHandler();
+        }
+        #endregion
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (eventData.used) return;
+
+            if (mainMenuManager.isActiveAndEnabled)
+                mainMenuManager.DismissMenu();
+            else
+                mainMenuManager.ShowMenu();
+
+            eventData.Use();
+        }
+
+        #region Open from file association
         //[Tooltip("The Prefab that gets instantiated to hold a new model.")]
         //public GameObject ModelManagerPrefab;
         //private string args = "";
 
-        #region MonoBehaviour Members
-        void Start()
-        {
-            InputManager.Instance.PushModalInputHandler(gameObject);
-        }
-
-        void Update()
-        {
-            // TODO: Refactor this or remove it
-            //var arguments = UnityEngine.WSA.Application.arguments;
-            //if (arguments == args || arguments == "") return;
-            //args = UnityEngine.WSA.Application.arguments;
-            //Instantiate(ModelManagerPrefab, Vector3.zero, Quaternion.identity, transform);
-        }
+        //void Update()
+        //{
+        //   var arguments = UnityEngine.WSA.Application.arguments;
+        //    if (arguments == args || arguments == "") return;
+        //    args = UnityEngine.WSA.Application.arguments;
+        //    Instantiate(ModelManagerPrefab, Vector3.zero, Quaternion.identity, transform);
+        //}
         #endregion
     }
 }

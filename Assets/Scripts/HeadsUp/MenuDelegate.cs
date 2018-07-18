@@ -1,17 +1,20 @@
-﻿namespace HeadsUp {
+﻿namespace HeadsUp
+{
 
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
-    using System;
 
     [RequireComponent(typeof(HandRotate))]
     [RequireComponent(typeof(HandScale))]
     [RequireComponent(typeof(HandTranslate))]
-    public class MenuDelegate : MonoBehaviour, IInputClickHandler {
+    public class MenuDelegate : MonoBehaviour, IInputClickHandler
+    {
 
-        public MenusManager MenusManager{
+        public MenusManager MenusManager
+        {
             get { return menusManager; }
-            set {
+            set
+            {
                 menusManager = value;
                 mainMenuManager = menusManager.MainMenu.GetComponent<MainMenuManager>();
                 rotateMenuManager = menusManager.RotateMenu.GetComponent<RotateMenuManager>();
@@ -26,28 +29,19 @@
         ScaleMenuManager scaleMenuManager;
         TranslateMenuManager translateMenuManager;
 
-        //public void OnInputClicked(InputEventData eventData) {
+        #region MonoBehaviour Members
+        void Start()
+        {
+            MenusManager = GameObject.Find("MenusManager").GetComponent<MenusManager>();
+        }
+        #endregion
 
-        //    if (!menusManager.MainMenu.activeSelf) {
-
-        //        menusManager.ThisModel = gameObject;
-        //        rotateMenuManager.handController = GetComponent<HandRotate>();
-        //        scaleMenuManager.handController = GetComponent<HandScale>();
-        //        translateMenuManager.handController = GetComponent<HandTranslate>();
-
-        //        mainMenuManager.ShowMenu();
-        //    }
-        //    else {
-
-        //        mainMenuManager.DismissMenu();
-        //    }
-        //}
-
-        public void OnInputClicked(InputClickedEventData eventData) {
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            if (eventData.used) return;
 
             if (!menusManager.MainMenu.activeSelf)
             {
-
                 menusManager.ThisModel = gameObject;
                 rotateMenuManager.handController = GetComponent<HandRotate>();
                 scaleMenuManager.handController = GetComponent<HandScale>();
@@ -57,9 +51,10 @@
             }
             else
             {
-
                 mainMenuManager.DismissMenu();
             }
+
+            eventData.Use();
         }
     }
 }

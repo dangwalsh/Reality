@@ -13,10 +13,12 @@
 
         Bounds aggregateBounds;
 
+        #region MonoBehaviour Members
         void Start()
         {
             transform.localPosition += new Vector3(0, 0, distanceFrom);
         }
+        #endregion
 
         public void OrientModel()
         {

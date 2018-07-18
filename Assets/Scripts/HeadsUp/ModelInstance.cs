@@ -1,6 +1,5 @@
 ﻿namespace HeadsUp
 {
-    using System.Collections;
     using UnityEngine;
     using UnityEngine.WSA;
 
@@ -8,13 +7,13 @@
     public class ModelInstance : MonoBehaviour
     {
 
-        [Tooltip("The GameObject displayed while loading content.")]
-        public GameObject LoadingScreen;
+        //[Tooltip("The GameObject displayed while loading content.")]
+        //public GameObject LoadingScreen;
 
         #region MonoBehaviour Members
         void Start()
         {
-            AttachMenuSystem();
+            //AttachMenuSystem();
             //var path = UnityEngine.WSA.Application.arguments.Replace("File=", "");
             var adapter = gameObject.GetComponent<GeometryAdapter>();
 
@@ -25,21 +24,21 @@
         }
         #endregion
 
-        void AttachMenuSystem()
-        {
-            var menuDelegate = gameObject.GetComponent<MenuDelegate>();
-            var menusManagerObject = GameObject.Find("MenusManager");
-            var menusManager = menusManagerObject.GetComponent<MenusManager>();
-            menuDelegate.MenusManager = menusManager;
-        }
+        //void AttachMenuSystem()
+        //{
+        //    var menuDelegate = gameObject.GetComponent<MenuDelegate>();
+        //    var menusManagerObject = GameObject.Find("MenusManager");
+        //    var menusManager = menusManagerObject.GetComponent<MenusManager>();
+        //    menuDelegate.MenusManager = menusManager;
+        //}
 
-        IEnumerator RemoveLoadingScreen()
-        {
-            yield return new WaitForSecondsRealtime(1);
-            LoadingScreen.SetActive(false);
+        //IEnumerator RemoveLoadingScreen()
+        //{
+        //    yield return new WaitForSecondsRealtime(1);
+        //    LoadingScreen.SetActive(false);
 
-            Time.timeScale = 1.0f;
-        }
+        //    Time.timeScale = 1.0f;
+        //}
     }
 }
 
