@@ -35,6 +35,7 @@ namespace HeadsUp
             openPicker.FileTypeFilter.Add(".zip");
 
             var file = await openPicker.PickSingleFileAsync();
+            if (file == null) return;
 
             byte[] fileBytes = null;
             using (var stream = await file.OpenReadAsync())

@@ -16,10 +16,7 @@
         #region MonoBehaviour Members
         void Start()
         {
-            var relativePosition = Camera.main.transform.InverseTransformDirection(0, 0, distanceFrom);
-            transform.localPosition = relativePosition;
-
-            //transform.localPosition += new Vector3(0, 0, distanceFrom);
+            
         }
         #endregion
 
@@ -28,6 +25,10 @@
             AggregateMeshes();
             PositionOnPivot();
             transform.localScale /= aggregateBounds.size.magnitude / scaleFactor;
+            var camera = Camera.main;
+            var cameraTransform = camera.transform;
+            var relativePosition = cameraTransform.InverseTransformDirection(0, 0, 2*distanceFrom);
+            transform.localPosition = relativePosition;
         }
 
         private void PositionOnPivot()
