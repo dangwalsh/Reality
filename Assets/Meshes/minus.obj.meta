@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: 4d2b2577ad8976c4285d0768e1bb2745
+guid: fbf94a245e568d141a97d2c2fa8df762
 timeCreated: 1532012447
 licenseType: Pro
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
-    100002: plus
+    100002: minus
     400000: //RootNode
-    400002: plus
-    2100000: plusMat
-    2300000: plus
-    3300000: plus
-    4300000: plus
+    400002: minus
+    2100000: minusMat
+    2300000: minus
+    3300000: minus
+    4300000: minus
   externalObjects: {}
   materials:
     importMaterials: 1
