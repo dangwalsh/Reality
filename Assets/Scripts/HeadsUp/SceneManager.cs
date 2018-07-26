@@ -15,8 +15,15 @@
             }
         }
 
+        public Vector3 HitPoint
+        {
+            get { return hitPoint; }
+            set { hitPoint = value; }
+        }
+
         MenusManager menusManager;
         MainMenuManager mainMenuManager;
+        Vector3 hitPoint;
 
         #region MonoBehaviour Members
         void Awake()
@@ -38,6 +45,15 @@
         public void OnInputClicked(InputClickedEventData eventData)
         {
             if (eventData.used) return;
+
+            Vector3 headPosition = Camera.main.transform.position;
+            Vector3 gazeDirection = Camera.main.transform.forward;
+
+            RaycastHit hitInfo;
+            if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f))//, modelAnchorManager.SpatialMappingManager.LayerMask))
+            {
+                HitPoint = hitInfo.point;
+            }
 
             if (mainMenuManager.isActiveAndEnabled)
                 mainMenuManager.DismissMenu();

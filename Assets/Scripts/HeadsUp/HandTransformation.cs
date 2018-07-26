@@ -1,4 +1,5 @@
-﻿namespace HeadsUp {
+﻿namespace HeadsUp
+{
 
     using System;
     using UnityEngine;
@@ -6,7 +7,8 @@
     using HoloToolkit.Unity.InputModule;
     using HoloToolkit.Unity.SpatialMapping;
 
-    public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler {
+    public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
+    {
         public event Action StartedTransformation;
         public event Action StoppedTransformation;
 
@@ -40,7 +42,8 @@
 
 
 
-        public float QuantizeValue {
+        public float QuantizeValue
+        {
             get;
             set;
         }
@@ -48,11 +51,14 @@
         public float TransformValue { get; set; }
 
         private float handValue;
-        public float HandValue {
-            get {
+        public float HandValue
+        {
+            get
+            {
                 return handValue;
             }
-            protected set {
+            protected set
+            {
                 var temp = value;
                 temp = (temp > 1.0f) ? 1.0f : temp;
                 temp = (temp < -1.0f) ? -1.0f : temp;
@@ -77,45 +83,52 @@
         //protected SpatialMappingManager spatialMappingManager;
         protected ModelAnchorManager modelAnchorManager;
 
-        public void OnFocusEnter() {
+        public void OnFocusEnter()
+        {
             if (isGazed)
                 return;
             isGazed = true;
         }
 
-        public void OnFocusExit() {
+        public void OnFocusExit()
+        {
             isGazed = false;
         }
 
-        public void OnInputDown(InputEventData eventData) {
+        public void OnInputDown(InputEventData eventData)
+        {
             currentInputSource = eventData.InputSource;
             currentInputSourceId = eventData.SourceId;
             StartTransform();
         }
 
-        public void OnInputUp(InputEventData eventData) {
+        public void OnInputUp(InputEventData eventData)
+        {
 
             StopTransform();
         }
 
-        public void OnSourceDetected(SourceStateEventData eventData) {
+        public void OnSourceDetected(SourceStateEventData eventData)
+        {
             // do nothing
         }
 
-        public void OnSourceLost(SourceStateEventData eventData) {
+        public void OnSourceLost(SourceStateEventData eventData)
+        {
             StopTransform();
         }
 
 
 
 
-        public void OnClick() {
-
+        public void OnClick()
+        {
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
 
             // If the user is in placing mode, display the spatial mapping mesh.
-            if (IsBeingPlaced) {
+            if (IsBeingPlaced)
+            {
                 modelAnchorManager.SpatialMappingManager.DrawVisualMeshes = true;
 
                 Debug.Log(gameObject.name + " : Removing existing world anchor if any.");
@@ -123,17 +136,16 @@
                 modelAnchorManager.AnchorManager.RemoveAnchor(gameObject);
             }
             // If the user is not in placing mode, hide the spatial mapping mesh.
-            else {
+            else
+            {
                 modelAnchorManager.SpatialMappingManager.DrawVisualMeshes = false;
                 // Add world anchor when object placement is done.
                 modelAnchorManager.AnchorManager.AttachAnchor(gameObject, modelAnchorManager.SavedAnchorFriendlyName);
             }
         }
 
-
-
-
-        private void StartTransform() {
+        private void StartTransform()
+        {
             InputManager.Instance.PushModalInputHandler(gameObject);
             isTransforming = true;
 
@@ -167,7 +179,8 @@
             StartedTransformation.RaiseEvent();
         }
 
-        private void UpdateTransform() {
+        private void UpdateTransform()
+        {
             // get the hand's current position vector
             Vector3 newHandPosition;
 
@@ -205,9 +218,9 @@
 
         protected abstract void ApplyTransformation(Vector3 pivotPosition, Vector3 newPosition, Vector3 delta, bool isPerpetual = true);
 
-        private void StopTransform() {
-            if (!isTransforming)
-                return;
+        private void StopTransform()
+        {
+            if (!isTransforming) return;
 
             InputManager.Instance.PopModalInputHandler();
             //StatsUpdater.TargetTransform = null;
@@ -216,13 +229,16 @@
             StoppedTransformation.RaiseEvent();
         }
 
-        private Vector3 GetHandPivotPosition() {
+        private Vector3 GetHandPivotPosition()
+        {
             Vector3 pivot = Camera.main.transform.position + new Vector3(0, -0.2f, 0) - Camera.main.transform.forward * 0.2f; // a bit lower and behind
             return pivot;
         }
 
-        private void Start() {
-            if (HostTransform == null) {
+        private void Start()
+        {
+            if (HostTransform == null)
+            {
                 HostTransform = transform;
             }
             mainCamera = Camera.main;
@@ -260,12 +276,14 @@
 
         }
 
-        private void Update() {
+        private void Update()
+        {
             if (isTransforming)
                 UpdateTransform();
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             this.HandValue = 0.0f;
         }
 

@@ -1,16 +1,22 @@
-﻿namespace HeadsUp {
-
+﻿namespace HeadsUp
+{
     using UnityEngine;
+    using HoloToolkit.Unity.InputModule;
 
-    public class TranslateMenuManager : MonoBehaviour {
+    public class TranslateMenuManager : MonoBehaviour
+    {
 
         public MenusManager menuController;
         public HandTranslate handController;
         public Transform mainMenu;
 
-        bool isTransforming;
+        LayerMask[] spatialMappingMask = { 1 << 31 };
+        LayerMask[] defaultMask = { 1 << 0 | 1 << 1 | 1 << 4 | 1 << 5 | 1 << 31 };
 
-        private void OnEnable() {
+        //bool isTransforming;
+
+        private void OnEnable()
+        {
             if (handController == null) return;
 
             handController.StartedTransformation += OnTransformationStarted;
@@ -21,7 +27,8 @@
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             if (handController == null) return;
 
             handController.StartedTransformation -= OnTransformationStarted;
@@ -29,13 +36,17 @@
             handController.enabled = false;
         }
 
-        private void OnTransformationStarted() {
-            isTransforming = true;
+        private void OnTransformationStarted()
+        {
+            //isTransforming = true;
+            GazeManager.Instance.RaycastLayerMasks = spatialMappingMask;
             handController.OnClick();
         }
 
-        private void OnTransformationStopped() {
-            isTransforming = false;
+        private void OnTransformationStopped()
+        {
+            //isTransforming = false;
+            GazeManager.Instance.RaycastLayerMasks = defaultMask;
             handController.OnClick();
             menuController.ReturnHome(gameObject);
         }

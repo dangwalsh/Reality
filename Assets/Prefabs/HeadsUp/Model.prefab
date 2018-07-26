@@ -90,8 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf90af149075ff94eaea8fbb83b15ca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoadingScreen: {fileID: 1210469408271068, guid: 1a7f5d695f98e934ba40b5efa5fe8d69,
-    type: 2}
 --- !u!114 &114388156587733000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,7 +113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scaleFactor: 1
-  distanceFrom: 3
+  xOffset: 0
+  yOffset: -1
+  zOffset: 2
 --- !u!114 &114544283688855928
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -30,8 +30,7 @@ namespace HeadsUp
 #if ENABLE_WINMD_SUPPORT
         public async void OpenFileAsync()
         {
-            openPicker = new FileOpenPicker();
-
+            openPicker = new FileOpenPicker { SuggestedStartLocation = PickerLocationId.Objects3D };
             openPicker.FileTypeFilter.Add(".zip");
 
             var file = await openPicker.PickSingleFileAsync();
@@ -48,39 +47,31 @@ namespace HeadsUp
                 }
             }
 
-            UnityEngine.WSA.Application.InvokeOnAppThread(new AppCallbackItem(() => { SaveToTemporaryFileAsync(file.Name, fileBytes); }), false);
+            UnityEngine.WSA.Application.InvokeOnAppThread(new AppCallbackItem(() => { SaveToObjects3DAsync(file.Name, fileBytes); }), false);
         }
 #endif
 
 #if ENABLE_WINMD_SUPPORT
-        public async void SaveToTemporaryFileAsync(string fileName, byte[] fileBytes)
+        public async void SaveToObjects3DAsync(string fileName, byte[] fileBytes)
         {
-            var file = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            var file = await KnownFolders.Objects3D.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
             await FileIO.WriteBytesAsync(file, fileBytes);
 
-            directory = ApplicationData.Current.TemporaryFolder.Path;
+            var folder = await KnownFolders.Objects3D.CreateFolderAsync(Path.GetFileNameWithoutExtension(file.Name), CreationCollisionOption.ReplaceExisting);
+            directory = folder.Path;
 
-            var zipPath = Path.Combine(directory, file.Name);
-            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+            using (ZipArchive archive = ZipFile.OpenRead(file.Path))
             {
-                archive.ExtractToDirectory(ApplicationData.Current.TemporaryFolder.Path, true);
+                archive.ExtractToDirectory(folder.Path, true);
             }
 
-            var files = await ApplicationData.Current.TemporaryFolder.GetFilesAsync();
-            var objFiles = new List<string>();
+            var files = await folder.GetFilesAsync();
 
-            foreach (var item in files)
+            var objFiles = files.Where(item => Path.GetExtension(item.Path) == ".obj").ToList();
+
+            foreach (var objFile in objFiles)
             {
-                if (Path.GetExtension(item.Path) != ".obj") continue;
-                objFiles.Add(item.Path);
-            }
-
-            if (objFiles == null)
-                throw new FileNotFoundException();
-
-            foreach (string objPath in objFiles)
-            {
-                int count = Facade.ImportObjects(objPath);
+                int count = Facade.ImportObjects(objFile.Path);
 
                 var verts = ConvertVertices();
                 var uvs = ConvertUVs();
@@ -88,42 +79,11 @@ namespace HeadsUp
                 CreateObjects(count, verts, uvs, gameObject);
             }
 
-            var manager = gameObject.GetComponent<ModelManager>();
-            manager.OrientModel();
+            gameObject.GetComponent<ModelManager>().OrientModel();
 
-            files = await ApplicationData.Current.TemporaryFolder.GetFilesAsync();
-
-            foreach (var item in files)
-                try
-                {
-                    await item.DeleteAsync();
-                }
-                catch (FileLoadException e)
-                {
-                    // recover after encountering an unreadable file
-                }   
+            await folder.DeleteAsync(); 
         }
 #endif
-
-        public void Initialize(string path, GameObject root)
-        {
-
-            directory = Path.GetDirectoryName(path);
-#if !UNITY_EDITOR
-            var zipTask = Facade.UnzipFileAsync(path);
-            var objPaths = zipTask.Result;
-
-            foreach (string objPath in objPaths)
-            {
-                int count = Facade.ImportObjects(objPath);
-
-                var verts = ConvertVertices();
-                var uvs = ConvertUVs();
-
-                CreateObjects(count, verts, uvs, root);
-            }
-#endif
-        }
 
         private void CreateObjects(int count, Vector3[] verts, Vector2[] uvs, GameObject root)
         {
@@ -133,10 +93,9 @@ namespace HeadsUp
                 var vertIndex = Facade.GetVertexIndexOfObject(obj);
                 var uvIndex = Facade.GetUVIndexOfObject(obj);
                 //var normIndex = Facade.GetNormalIndexOfObject(obj);
-                var divs = Math.Ceiling((double)vertIndex.Length / MAXVERTS);
-                var name = Facade.GetNameOfObject(obj);
-
-                var parent = GameObject.Find(name); 
+                var divs = Math.Ceiling((double)vertIndex.Length / MAXVERTS);       
+                var name = Facade.GetNameOfObject(obj);       
+                var parent = GameObject.Find(name);
 
                 if (parent == null)
                 {
@@ -158,14 +117,14 @@ namespace HeadsUp
                     mesh.uv = SplitArrays<Vector2>(uvs, uvIndex, subdiv);
                     mesh.triangles = Enumerable.Range(0, mesh.vertices.Length).ToArray();
 
-                    mesh.RecalculateNormals();
+                    mesh.RecalculateNormals();   
                     mesh.RecalculateTangents();
+    
                     child.AddComponent<MeshCollider>();
                     child.transform.parent = parent.transform;
                 }
 #endif
             }
-            
         }
 
         #region Material Methods
@@ -177,7 +136,6 @@ namespace HeadsUp
         /// <returns></returns>
         private Material CreateMaterial(int index, string shaderType)
         {
-
             var shader = Shader.Find(shaderType);
             var material = new Material(shader);
 #if !UNITY_EDITOR
@@ -252,10 +210,10 @@ namespace HeadsUp
         /// <returns></returns>
         private Texture2D CreateTexture2D(string path)
         {
-
             var texture = new Texture2D(4, 4, TextureFormat.DXT5, true);
             var bytes = File.ReadAllBytes(directory + Path.DirectorySeparatorChar + path);
             var image = texture.LoadImage(bytes);
+
             if (!image)
                 throw new Exception("the texture map did not load");
 
@@ -295,7 +253,6 @@ namespace HeadsUp
         /// <returns></returns>
         private Vector3[] ConvertNormals()
         {
-
             Vector3[] norms = null;
 #if !UNITY_EDITOR
             var objNorms = Facade.GetNormals();
@@ -320,7 +277,6 @@ namespace HeadsUp
         /// <returns></returns>
         private Vector2[] ConvertUVs()
         {
-
             Vector2[] uvs = null;
 #if !UNITY_EDITOR
             var objUVs = Facade.GetUVs();
@@ -348,7 +304,6 @@ namespace HeadsUp
         /// <returns></returns>
         private T[] SplitArrays<T>(T[] verts, int[] index, int iter)
         {
-
             var start = MAXVERTS * iter;
             var sector = index.Length - start;
             var end = (sector < MAXVERTS) ? sector + start : MAXVERTS + start;
@@ -366,7 +321,6 @@ namespace HeadsUp
         /// <param name="blendMode"></param>
         private void ChangeBlendMode(Material material, BlendMode blendMode)
         {
-
             switch (blendMode)
             {
                 case BlendMode.Opaque:
