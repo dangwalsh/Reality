@@ -3,10 +3,10 @@
     using UnityEngine;
     using HoloToolkit.Unity.InputModule;
 
-    public class TranslateMenuManager : MonoBehaviour
+    public class MenuManagerTranslate : MonoBehaviour
     {
 
-        public MenusManager menuController;
+        public MenuManager menuController;
         public HandTranslate handController;
         public Transform mainMenu;
 

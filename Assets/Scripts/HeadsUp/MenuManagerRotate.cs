@@ -1,8 +1,9 @@
 ﻿namespace HeadsUp
 {
+    using HoloToolkit.Unity.InputModule;
     using UnityEngine;
 
-    public class ScaleMenuManager : MonoBehaviour
+    public class MenuManagerRotate : MonoBehaviour, IInputClickHandler
     {
 
         public GameObject leftIndicator;
@@ -11,13 +12,14 @@
         public GameObject rightControl;
         public TextMesh textField;
 
-        public MenusManager menuController;
-        public HandScale handController;
+        public MenuManager menuController;
+        public HandRotate handController;
         public Camera sceneCamera;
         public Transform mainMenu;
 
         bool isTransforming;
 
+        #region MonoBehaviour Members
         private void OnEnable()
         {
             if (handController == null) return;
@@ -46,7 +48,6 @@
 
         private void Update()
         {
-            if (handController == null) return;
 
             if (handController.HandValue < 0)
             {
@@ -69,9 +70,9 @@
                 ResetControls();
             }
 
-            textField.text = handController.TransformValue.ToString("n3");
+            textField.text = handController.TransformValue.ToString("n0");
         }
-
+        #endregion
 
         private void OnTransformationStarted()
         {
@@ -82,20 +83,23 @@
         private void OnTransformationStopped()
         {
             isTransforming = false;
-            handController.OnClick();
             menuController.ReturnHome(gameObject);
+            handController.OnClick();
         }
 
         private void ResetControls()
         {
-            if (gameObject.activeInHierarchy) handController.enabled = true;
-
             leftControl.transform.localPosition = Vector3.zero;
             rightControl.transform.localPosition = Vector3.zero;
             leftControl.SetActive(false);
             leftIndicator.SetActive(false);
             rightControl.SetActive(false);
             rightIndicator.SetActive(false);
+        }
+
+        public void OnInputClicked(InputClickedEventData eventData)
+        {
+            eventData.Use();
         }
     }
 }

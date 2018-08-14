@@ -19,7 +19,7 @@ namespace HeadsUp
     using System.Threading.Tasks;
 #endif
 
-    public class GeometryAdapter : MonoBehaviour
+    public class ModelGeometryAdapter : MonoBehaviour
     {
         const int MAXVERTS = 63000;
         string directory = "";

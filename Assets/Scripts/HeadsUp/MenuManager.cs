@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    public class MenusManager : MonoBehaviour
+    public class MenuManager : MonoBehaviour
     {
         public GameObject MainMenu;
         public GameObject HeightMenu;

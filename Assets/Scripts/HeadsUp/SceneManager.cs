@@ -5,13 +5,13 @@
 
     public class SceneManager : MonoBehaviour, IInputClickHandler
     {
-        public MenusManager MenusManager
+        public MenuManager MenusManager
         {
             get { return menusManager; }
             set
             {
                 menusManager = value;
-                mainMenuManager = menusManager.MainMenu.GetComponent<MainMenuManager>();
+                mainMenuManager = menusManager.MainMenu.GetComponent<MenuManagerMain>();
             }
         }
 
@@ -21,14 +21,14 @@
             set { hitPoint = value; }
         }
 
-        MenusManager menusManager;
-        MainMenuManager mainMenuManager;
+        MenuManager menusManager;
+        MenuManagerMain mainMenuManager;
         Vector3 hitPoint;
 
         #region MonoBehaviour Members
         void Awake()
         {
-            MenusManager = GameObject.Find("MenusManager").GetComponent<MenusManager>();
+            MenusManager = GameObject.Find("MenusManager").GetComponent<MenuManager>();
         }
 
         void OnEnable()

@@ -4,7 +4,7 @@
     using System.Collections;
     using UnityEngine;
 
-    public class RotateSnapManager : SnapManager
+    public class SnapManagerRotate : SnapManager
     {
         protected override void SetSnapVector()
         {

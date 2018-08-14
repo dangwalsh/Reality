@@ -7,33 +7,33 @@
     [RequireComponent(typeof(HandScale))]
     [RequireComponent(typeof(HandTranslate))]
     [RequireComponent(typeof(HandElevate))]
-    public class MenuDelegate : MonoBehaviour, IInputClickHandler
+    public class ModelMenuDelegate : MonoBehaviour, IInputClickHandler
     {
-        public MenusManager MenusManager
+        public MenuManager MenusManager
         {
             get { return menusManager; }
             set
             {
                 menusManager = value;
-                mainMenuManager = menusManager.MainMenu.GetComponent<MainMenuManager>();
-                heightMenuManager = menusManager.HeightMenu.GetComponent<HeightMenuManager>();
-                rotateMenuManager = menusManager.RotateMenu.GetComponent<RotateMenuManager>();
-                scaleMenuManager = menusManager.ScaleMenu.GetComponent<ScaleMenuManager>();
-                translateMenuManager = menusManager.TranslateMenu.GetComponent<TranslateMenuManager>();
+                mainMenuManager = menusManager.MainMenu.GetComponent<MenuManagerMain>();
+                heightMenuManager = menusManager.HeightMenu.GetComponent<MenuManagerHeight>();
+                rotateMenuManager = menusManager.RotateMenu.GetComponent<MenuManagerRotate>();
+                scaleMenuManager = menusManager.ScaleMenu.GetComponent<MenuManagerScale>();
+                translateMenuManager = menusManager.TranslateMenu.GetComponent<MenuManagerTranslate>();
             }
         }
 
-        MenusManager menusManager;
-        MainMenuManager mainMenuManager;
-        HeightMenuManager heightMenuManager;
-        RotateMenuManager rotateMenuManager;
-        ScaleMenuManager scaleMenuManager;
-        TranslateMenuManager translateMenuManager;
+        MenuManager menusManager;
+        MenuManagerMain mainMenuManager;
+        MenuManagerHeight heightMenuManager;
+        MenuManagerRotate rotateMenuManager;
+        MenuManagerScale scaleMenuManager;
+        MenuManagerTranslate translateMenuManager;
 
         #region MonoBehaviour Members
         void Start()
         {
-            MenusManager = GameObject.Find("MenusManager").GetComponent<MenusManager>();
+            MenusManager = GameObject.Find("MenusManager").GetComponent<MenuManager>();
         }
         #endregion
 

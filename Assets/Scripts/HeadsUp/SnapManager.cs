@@ -24,7 +24,7 @@
         protected int count;
         protected int length;
         protected float snapValue;
-        protected MenusManager menusManager;
+        protected MenuManager menusManager;
         protected HandTransformation handController;
         protected Vector3 startVector;
         protected Vector3 endVector;
@@ -35,7 +35,7 @@
 
             parentMenu = transform.parent.gameObject;
             if (parentMenu == null) return;
-            menusManager = parentMenu.GetComponentInParent<MenusManager>();
+            menusManager = parentMenu.GetComponentInParent<MenuManager>();
             if (menusManager == null) return;
             handController = menusManager.ThisModel.GetComponent<HandTransformation>();
             if (menusManager == null) return;

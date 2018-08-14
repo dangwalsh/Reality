@@ -1,9 +1,10 @@
 ﻿namespace HeadsUp
 {
     using UnityEngine;
-    using HoloToolkit.Unity;
     using HoloToolkit.Unity.InputModule;
+    using System;
 
+    [Obsolete("Not in use", true)]
     public class SourceManager : MonoBehaviour, ISourceStateHandler
     {
         public void OnSourceDetected(SourceStateEventData eventData)

@@ -1,10 +1,11 @@
-﻿namespace HeadsUp {
-
+﻿namespace HeadsUp
+{
     using System;
     using UnityEngine;
     using HoloToolkit.Unity;
     using HoloToolkit.Unity.InputModule;
 
+    [Obsolete("Use HandTransformation instead", true)]
     public abstract class GazeTransformation : MonoBehaviour, IInputClickHandler {
         public event Action StartedTransformation;
         public event Action StoppedTransformation;

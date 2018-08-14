@@ -3,7 +3,7 @@
     using UnityEngine;
     using UnityEngine.WSA;
 
-    [RequireComponent(typeof(GeometryAdapter))]
+    [RequireComponent(typeof(ModelGeometryAdapter))]
     public class ModelInstance : MonoBehaviour
     {
 
@@ -15,7 +15,7 @@
         {
             //AttachMenuSystem();
             //var path = UnityEngine.WSA.Application.arguments.Replace("File=", "");
-            var adapter = gameObject.GetComponent<GeometryAdapter>();
+            var adapter = gameObject.GetComponent<ModelGeometryAdapter>();
 
 #if ENABLE_WINMD_SUPPORT
             UnityEngine.WSA.Application.InvokeOnUIThread(new AppCallbackItem(() => { adapter.OpenFileAsync(); }), false);

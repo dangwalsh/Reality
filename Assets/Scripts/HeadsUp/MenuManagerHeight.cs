@@ -3,24 +3,23 @@
     using HoloToolkit.Unity.InputModule;
     using UnityEngine;
 
-    public class RotateMenuManager : MonoBehaviour, IInputClickHandler
+    public class MenuManagerHeight : MonoBehaviour, IInputClickHandler
     {
-
         public GameObject leftIndicator;
         public GameObject rightIndicator;
         public GameObject leftControl;
         public GameObject rightControl;
         public TextMesh textField;
 
-        public MenusManager menuController;
-        public HandRotate handController;
+        public MenuManager menuController;
+        public HandElevate handController; 
         public Camera sceneCamera;
         public Transform mainMenu;
 
         bool isTransforming;
 
         #region MonoBehaviour Members
-        private void OnEnable()
+        void OnEnable()
         {
             if (handController == null) return;
 
@@ -32,7 +31,7 @@
             gameObject.transform.rotation = mainMenu.rotation;
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
             if (handController == null) return;
 
@@ -41,14 +40,13 @@
             handController.enabled = false;
         }
 
-        private void Start()
+        void Start()
         {
             ResetControls();
         }
 
-        private void Update()
+        void Update()
         {
-
             if (handController.HandValue < 0)
             {
                 leftControl.SetActive(false);
@@ -74,6 +72,16 @@
         }
         #endregion
 
+        private void ResetControls()
+        {
+            leftControl.transform.localPosition = Vector3.zero;
+            rightControl.transform.localPosition = Vector3.zero;
+            leftControl.SetActive(false);
+            leftIndicator.SetActive(false);
+            rightControl.SetActive(false);
+            rightIndicator.SetActive(false);
+        }
+
         private void OnTransformationStarted()
         {
             isTransforming = true;
@@ -85,16 +93,6 @@
             isTransforming = false;
             menuController.ReturnHome(gameObject);
             handController.OnClick();
-        }
-
-        private void ResetControls()
-        {
-            leftControl.transform.localPosition = Vector3.zero;
-            rightControl.transform.localPosition = Vector3.zero;
-            leftControl.SetActive(false);
-            leftIndicator.SetActive(false);
-            rightControl.SetActive(false);
-            rightIndicator.SetActive(false);
         }
 
         public void OnInputClicked(InputClickedEventData eventData)

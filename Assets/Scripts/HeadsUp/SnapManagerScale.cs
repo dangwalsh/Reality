@@ -3,7 +3,7 @@
     using UnityEngine;
     using System.Collections;
 
-    public class ScaleSnapManager : SnapManager {
+    public class SnapManagerScale : SnapManager {
 
         protected override void SetSnapVector() {
 

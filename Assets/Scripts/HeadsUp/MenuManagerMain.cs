@@ -3,7 +3,7 @@
     using UnityEngine;
     using System.Collections;
 
-    public class MainMenuManager : MonoBehaviour {
+    public class MenuManagerMain : MonoBehaviour {
 
         public AudioSource PlayOnEnable;
         public AudioSource PlayOnDisable;
