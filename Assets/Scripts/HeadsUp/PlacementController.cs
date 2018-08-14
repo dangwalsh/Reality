@@ -1,8 +1,9 @@
-﻿namespace HeadsUp {
-
+﻿namespace HeadsUp
+{
     using UnityEngine;
     using HoloToolkit.Unity;
     using HoloToolkit.Unity.SpatialMapping;
+    using System;
 
     /// <summary>
     /// The TapToPlace class is a basic way to enable users to move objects 
@@ -14,8 +15,9 @@
     /// and SpatialMappingManager.
     /// TapToPlace also adds a WorldAnchor component to enable persistence.
     /// </summary>
-
-    public class PlacementController : MonoBehaviour {
+    [Obsolete("Not in use", true)]
+    public class PlacementController : MonoBehaviour
+    {
         [Tooltip("Supply a friendly name for the anchor as the key name for the WorldAnchorStore.")]
         public string SavedAnchorFriendlyName = "SavedAnchorFriendlyName";
 
@@ -44,28 +46,35 @@
         /// </summary>
         protected SpatialMappingManager spatialMappingManager;
 
-        protected virtual void Start() {
+        protected virtual void Start()
+        {
             // Make sure we have all the components in the scene we need.
             anchorManager = WorldAnchorManager.Instance;
-            if (anchorManager == null) {
+            if (anchorManager == null)
+            {
                 Debug.LogError("This script expects that you have a WorldAnchorManager component in your scene.");
             }
 
             spatialMappingManager = SpatialMappingManager.Instance;
-            if (spatialMappingManager == null) {
+            if (spatialMappingManager == null)
+            {
                 Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
             }
 
-            if (anchorManager != null && spatialMappingManager != null) {
+            if (anchorManager != null && spatialMappingManager != null)
+            {
                 anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
-            else {
+            else
+            {
                 // If we don't have what we need to proceed, we may as well remove ourselves.
                 Destroy(this);
             }
 
-            if (PlaceParentOnTap) {
-                if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform)) {
+            if (PlaceParentOnTap)
+            {
+                if (ParentGameObjectToPlace != null && !gameObject.transform.IsChildOf(ParentGameObjectToPlace.transform))
+                {
                     Debug.LogError("The specified parent object is not a parent of this object.");
                 }
 
@@ -73,16 +82,19 @@
             }
         }
 
-        protected virtual void Update() {
+        protected virtual void Update()
+        {
             // If the user is in placing mode,
             // update the placement to match the user's gaze.
-            if (IsBeingPlaced) {
+            if (IsBeingPlaced)
+            {
                 // Do a raycast into the world that will only hit the Spatial Mapping mesh.
                 Vector3 headPosition = Camera.main.transform.position;
                 Vector3 gazeDirection = Camera.main.transform.forward;
 
                 RaycastHit hitInfo;
-                if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask)) {
+                if (Physics.Raycast(headPosition, gazeDirection, out hitInfo, 30.0f, spatialMappingManager.LayerMask))
+                {
                     // Rotate this object to face the user.
                     Quaternion toQuat = Camera.main.transform.localRotation;
                     toQuat.x = 0;
@@ -94,13 +106,15 @@
                     // to how the object is placed.  For example, consider
                     // placing based on the bottom of the object's
                     // collider so it sits properly on surfaces.
-                    if (PlaceParentOnTap) {
+                    if (PlaceParentOnTap)
+                    {
                         // Place the parent object as well but keep the focus on the current game object
                         Vector3 currentMovement = hitInfo.point - gameObject.transform.position;
                         ParentGameObjectToPlace.transform.position += currentMovement;
                         ParentGameObjectToPlace.transform.rotation = toQuat;
                     }
-                    else {
+                    else
+                    {
                         gameObject.transform.position = hitInfo.point;
                         gameObject.transform.rotation = toQuat;
                     }
@@ -108,13 +122,15 @@
             }
         }
 
-        public void OnClick() {
+        public void OnClick()
+        {
 
             // On each tap gesture, toggle whether the user is in placing mode.
             IsBeingPlaced = !IsBeingPlaced;
 
             // If the user is in placing mode, display the spatial mapping mesh.
-            if (IsBeingPlaced) {
+            if (IsBeingPlaced)
+            {
                 spatialMappingManager.DrawVisualMeshes = true;
 
                 Debug.Log(gameObject.name + " : Removing existing world anchor if any.");
@@ -122,20 +138,25 @@
                 anchorManager.RemoveAnchor(gameObject);
             }
             // If the user is not in placing mode, hide the spatial mapping mesh.
-            else {
+            else
+            {
                 spatialMappingManager.DrawVisualMeshes = false;
                 // Add world anchor when object placement is done.
                 anchorManager.AttachAnchor(gameObject, SavedAnchorFriendlyName);
             }
         }
 
-        private void DetermineParent() {
-            if (ParentGameObjectToPlace == null) {
-                if (gameObject.transform.parent == null) {
+        private void DetermineParent()
+        {
+            if (ParentGameObjectToPlace == null)
+            {
+                if (gameObject.transform.parent == null)
+                {
                     Debug.LogError("The selected GameObject has no parent.");
                     PlaceParentOnTap = false;
                 }
-                else {
+                else
+                {
                     Debug.LogError("No parent specified. Using immediate parent instead: " + gameObject.transform.parent.gameObject.name);
                     ParentGameObjectToPlace = gameObject.transform.parent.gameObject;
                 }

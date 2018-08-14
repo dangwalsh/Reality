@@ -4,7 +4,7 @@
     using System.Collections;
     using UnityEngine;
 
-    public class HandTranslate : HandTransformation
+    public class HandTranslate : HandBase
     {
         protected override void ApplyTransformation(Vector3 pivotPosition, Vector3 newPosition, Vector3 delta, bool isPerpetual = true)
         {

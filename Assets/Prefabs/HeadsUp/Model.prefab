@@ -96,6 +96,8 @@ MonoBehaviour:
   IsOrientTowardsUser: 0
   IsKeepUpright: 1
   IsBeingPlaced: 0
+  maxOffset: 1
+  minOffset: -1
 --- !u!114 &114280598104731636
 MonoBehaviour:
   m_ObjectHideFlags: 1

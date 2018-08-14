@@ -6,7 +6,7 @@
     using System;
     using System.Collections;
 
-    public abstract class SnapManager : MonoBehaviour, IInputClickHandler
+    public abstract class SnapManagerBase : MonoBehaviour, IInputClickHandler
     {
 
         [Serializable]
@@ -25,7 +25,7 @@
         protected int length;
         protected float snapValue;
         protected MenuManager menusManager;
-        protected HandTransformation handController;
+        protected HandBase handController;
         protected Vector3 startVector;
         protected Vector3 endVector;
 
@@ -37,7 +37,7 @@
             if (parentMenu == null) return;
             menusManager = parentMenu.GetComponentInParent<MenuManager>();
             if (menusManager == null) return;
-            handController = menusManager.ThisModel.GetComponent<HandTransformation>();
+            handController = menusManager.ThisModel.GetComponent<HandBase>();
             if (menusManager == null) return;
 
             foreach (var snap in Snaps)

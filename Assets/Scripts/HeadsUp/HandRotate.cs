@@ -2,7 +2,7 @@
 
     using UnityEngine;
 
-    public class HandRotate : HandTransformation {
+    public class HandRotate : HandBase {
 
         float cumRotationFactor;
 

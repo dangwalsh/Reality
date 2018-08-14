@@ -7,7 +7,7 @@
     using HoloToolkit.Unity.InputModule;
     using HoloToolkit.Unity.SpatialMapping;
 
-    public abstract class HandTransformation : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
+    public abstract class HandBase : MonoBehaviour, IFocusable, IInputHandler, ISourceStateHandler
     {
         public event Action StartedTransformation;
         public event Action StoppedTransformation;

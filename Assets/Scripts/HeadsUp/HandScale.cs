@@ -2,7 +2,7 @@
 
     using UnityEngine;
 
-    public class HandScale : HandTransformation {
+    public class HandScale : HandBase {
 
         private void Awake() {
 
