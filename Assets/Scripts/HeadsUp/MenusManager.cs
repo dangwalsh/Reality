@@ -5,6 +5,7 @@
     public class MenusManager : MonoBehaviour
     {
         public GameObject MainMenu;
+        public GameObject HeightMenu;
         public GameObject RotateMenu;
         public GameObject ScaleMenu;
         public GameObject TranslateMenu;
@@ -16,6 +17,11 @@
             //MainMenu.SetActive(true);
             pSender.SetActive(false);
             //MainMenu.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.4f, 1.0f));
+        }
+
+        public void ShowHeightMenu()
+        {
+            this.HeightMenu.SetActive(true);
         }
 
         public void ShowRotateMenu()

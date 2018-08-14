@@ -19,7 +19,7 @@
 
         bool isTransforming;
 
-
+        #region MonoBehaviour Members
         private void OnEnable()
         {
             if (handController == null) return;
@@ -72,6 +72,7 @@
 
             textField.text = handController.TransformValue.ToString("n0");
         }
+        #endregion
 
         private void OnTransformationStarted()
         {
